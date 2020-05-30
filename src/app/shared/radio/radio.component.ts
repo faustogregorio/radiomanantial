@@ -7,7 +7,7 @@ import { MatSliderChange } from '@angular/material/slider';
   styleUrls: ['./radio.component.scss']
 })
 export class RadioComponent implements OnInit {
-  radio = new Audio('http://167.114.116.223:2109/;');
+  radio = new Audio('http://167.114.116.223:2109/;stream/1');
   paused = true;
   /* live = false; */
   audioOff = false;
