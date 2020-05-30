@@ -123,6 +123,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "radiomanantial"
+    }
+  },
+  "defaultProject": "radiomanantial",
+  "cli": {
+    "analytics": false
+  }
 }
