@@ -1,0 +1,64 @@
+<div
+  style="width: 100%; position: relative;"
+  fxLayout="column"
+  fxLayoutAlign="center center"
+  fxLayoutGap="15px"
+>
+  <mat-icon
+    style="right: 0; top: 0; position: absolute; cursor: pointer;"
+    (click)="closeDialog()"
+    >close</mat-icon
+  >
+  <div style="width: 100%;" fxLayoutAlign="center start">
+    <h2>Imagen Principal</h2>
+  </div>
+  <div style="width: 100%;" fxLayout="column" fxLayoutGap="20px" [style.display]="isUploading ? 'none' : 'block'">
+
+    <div style="width: 100%;" fxLayoutAlign="center">
+      <input
+        style="display: none;"
+        type="file"
+        (change)="onFileChange($event)"
+        #file
+      />
+      <button
+        mat-stroked-button
+        type="button"
+        color="accent"
+        (click)="addFile()"
+      >
+        <mat-icon>add_photo_alternate</mat-icon>
+        Buscar imagen
+      </button>
+    </div>
+    <div style="width: 100%;" fxLayoutAlign="center center">
+      <img
+        src=""
+        alt=""
+        height="auto"
+        height="200px"
+        #image
+        [style.display]="imageExist ? 'block' : 'none'"
+      />
+    </div>
+    <div style="width: 100%;" fxLayoutAlign="center" *ngIf="imageExist">
+      <button
+        mat-stroked-button
+        color="primary"
+        type="button"
+        (click)="uploadImage()"
+      >
+        <mat-icon>add</mat-icon>
+        Agregar
+      </button>
+    </div>
+  </div>
+
+  <mat-progress-spinner
+    color="primary"
+    diameter="40"
+    mode="indeterminate"
+    *ngIf="isUploading"
+  ></mat-progress-spinner>
+  <app-images></app-images>
+</div>

@@ -1,3 +1,14 @@
 mat-grid-tile {
   background: lightblue;
 }
+
+button {
+  display: none;
+}
+
+#carousel-container:hover {
+
+  button {
+    display: block;
+  }
+}

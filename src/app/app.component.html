@@ -7,7 +7,7 @@
       style="width: 100%; height: 100%;"
       fxLayoutAlign="space-between center"
     >
-      <button mat-icon-button (click)="snav.toggle()">
+      <button mat-icon-button (click)="openSidenav(snav)">
         <mat-icon>settings</mat-icon>
       </button>
 
@@ -17,12 +17,13 @@
           fxLayoutAlign="start center"
           fxLayoutGap="4px"
         >
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg"
-            alt=""
-            height="26px"
-          />
-          <a href="https://www.facebook.com/RadioManantialMexico/" target="_blank" style="color: white;">Radio Manantial</a>
+          <img src="assets/img/facebook-logo.svg" alt="" height="26px" />
+          <a
+            href="https://www.facebook.com/RadioManantialMexico/"
+            target="_blank"
+            style="color: white;"
+            >Radio Manantial</a
+          >
         </div>
 
         <div style="height: 100%;" fxLayoutAlign="start center">
@@ -54,14 +55,31 @@
       mode="over'"
       fixedInViewport="true"
       [fixedTopGap]="mobileQuery.matches ? 56 : 64"
+      style="width: 300px;"
     >
       <mat-nav-list>
-        <a mat-list-item routerLink=".">link</a>
+        <a mat-list-item (click)="openHomeImage(snav)"
+          ><span fxLayout="row" fxLayoutGap="20px"
+            ><mat-icon>add_photo_alternate</mat-icon>
+            <span>IMAGEN PRINCIPAL</span></span
+          ></a
+        >
+        <a mat-list-item [matMenuTriggerFor]="anunciosMenu"
+          ><span fxLayout="row" fxLayoutGap="20px"
+            ><mat-icon>add_box</mat-icon>
+            <span>ANUNCIANTES</span></span
+          ></a
+        >
+        <a mat-list-item (click)="logout(snav)"
+          ><span fxLayout="row" fxLayoutGap="20px"
+            ><mat-icon>person_outline</mat-icon>
+            <span>CERRAR SESIÓN</span></span
+          ></a
+        >
       </mat-nav-list>
     </mat-sidenav>
 
-    <mat-sidenav-content
-    >
+    <mat-sidenav-content>
       <div style="width: 100%;" fxLayoutAlign="center start">
         <div class="anuncio">
           <app-carousel
@@ -99,3 +117,13 @@
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>
+<mat-menu #anunciosMenu="matMenu">
+  <button mat-menu-item (click)="viewAnuncios()">
+    <mat-icon>view_list</mat-icon>
+    <span>VER ANUNCIANTES</span>
+  </button>
+  <button mat-menu-item (click)="addAnuncio()">
+    <mat-icon>add</mat-icon>
+    <span>AGREGAR ANUNCIANTE</span>
+  </button>
+</mat-menu>

@@ -1,0 +1,51 @@
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z0">
+  <!--- Note that these columns can be defined in any order.
+        The actual rendered columns are set as a property on the row definition" -->
+
+  <!-- index Column -->
+  <ng-container matColumnDef="index">
+    <th mat-header-cell *matHeaderCellDef>#</th>
+    <td mat-cell *matCellDef="let index = index">
+      {{ images.value.length - index }}
+    </td>
+  </ng-container>
+  <!-- PATH Column -->
+  <ng-container matColumnDef="path">
+    <th mat-header-cell *matHeaderCellDef>IMAGEN</th>
+    <td mat-cell *matCellDef="let element">
+      <img
+        [src]="domain + '/uploads/' + element.nombre"
+        alt=""
+        height="100px"
+      />
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="more">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let element">
+      <mat-slide-toggle
+        [checked]="element.selected ? 'true' : 'false'"
+        (change)="verEvento($event, element.id, element.nombre)"
+        >{{
+          element.selected ? "Seleccionado" : "Seleccionar"
+        }}</mat-slide-toggle
+      >
+      <button
+        mat-icon-button
+        color="warn"
+        aria-label="Example icon button with a heart icon"
+        type="button"
+        (click)="deleteImage(element.id, element.nombre)"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr
+    mat-row
+    *matRowDef="let row; columns: displayedColumns"
+  ></tr>
+</table>

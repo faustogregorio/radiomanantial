@@ -18,6 +18,12 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { SlideComponent } from './shared/carousel/slide/slide.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FooterComponent } from './shared/footer/footer.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { CookieService } from 'ngx-cookie-service';
+import { AuthInterceptorService } from './auth/auth-interceptor.service';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import {MatMenuModule} from '@angular/material/menu';
 
 @NgModule({
   declarations: [
@@ -39,9 +45,22 @@ import { FooterComponent } from './shared/footer/footer.component';
     MatButtonModule,
     MatSliderModule,
     MatGridListModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatDialogModule,
+    HttpClientModule,
+    MatSnackBarModule,
+    MatMenuModule
   ],
-  providers: [],
+  entryComponents: [
+  ],
+  providers: [
+    CookieService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

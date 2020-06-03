@@ -21,10 +21,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
 export class CarouselComponent implements OnInit, OnDestroy {
   carouselForm: FormGroup;
   carouselData = [
-    { id: 1, img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSvBtJ4Mhcz5hYQNMOnH68qUM9e3o03KHmZp2N7drye_oBPXACl&usqp=CAU' },
-    { id: 3, img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSQb20PN03itlOMhnwej-ASBGe7GLvQARSqmHB1ZTiTvlja5raj&usqp=CAU' },
-    { id: 4, img: 'https://papers.co/wallpaper/papers.co-at52-hatsune-miku-anime-girl-train-blue-art-illustration-cute-36-3840x2400-4k-wallpaper.jpg' },
-    { id: 5, img: 'https://i.pinimg.com/originals/ac/63/6f/ac636f1502b513c050d58f9ce2810913.jpg' },
+    { id: 5, img: 'http://www.radiomanantial995.com/admin/imagenes/foto_260520_MBM.jpg' },
     { id: 1, img: 'http://www.radiomanantial995.com/admin/imagenes/foto_260520_1M_HOTEL_DELFINES_FRONTAL.jpg' },
 
 
