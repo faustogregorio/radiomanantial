@@ -1,15 +1,97 @@
 <div
   style="width: 100%; position: relative;"
-  fxLayout="column"
-  fxLayoutAlign="center center"
-  fxLayoutGap="15px"
+  fxLayout="row wrap"
+  fxLayoutAlign="center"
 >
   <mat-icon
     style="right: 0; top: 0; position: absolute; cursor: pointer;"
     (click)="closeDialog()"
     >close</mat-icon
   >
-  <div style="width: 100%;" fxLayoutAlign="center start">
-    <h2>Anuncios</h2>
+  <div fxFlex="100%" fxLayoutAlign="center start">
+    <h2>Anunciantes</h2>
+  </div>
+  <div fxFlex="100%" fxLayoutAlign="center start">
+    <table
+      mat-table
+      fxFlex="50%"
+      [dataSource]="dataSource"
+      class="mat-elevation-z0"
+    >
+      <ng-container matColumnDef="index">
+        <th mat-header-cell *matHeaderCellDef>#</th>
+        <td mat-cell *matCellDef="let index = index">
+          {{ anuncios.value.length - index }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="foto">
+        <th mat-header-cell *matHeaderCellDef>IMAGEN PRINCIPAL</th>
+        <td mat-cell *matCellDef="let element">
+          <img
+            [src]="domain + '/uploads/' + element.foto"
+            alt=""
+            height="100px"
+          />
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="logo">
+        <th mat-header-cell *matHeaderCellDef>LOGO</th>
+        <td mat-cell *matCellDef="let element">
+          <img
+            [src]="domain + '/uploads/' + element.logo"
+            alt=""
+            height="100px"
+          />
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="more">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button color="accent" [matMenuTriggerFor]="menuEdit">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            color="warn"
+            type="button"
+            (click)="deleteAnuncio(element.id, element.foto, element.logo)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+          <mat-menu #menuEdit="matMenu">
+            <button mat-menu-item (click)="editAnuncio(element.id, 'Imagen Principal')">
+              <mat-icon>edit</mat-icon>
+              <span>Imagen Principal</span>
+            </button>
+            <button mat-menu-item (click)="editAnuncio(element.id, 'Logo')">
+              <mat-icon>edit</mat-icon>
+              <span>Logo</span>
+            </button>
+            <button mat-menu-item (click)="editAnuncio(element.id, 'Imagenes')">
+              <mat-icon>edit</mat-icon>
+              <span>Imagenes</span>
+            </button>
+            <button mat-menu-item (click)="editAnuncio(element.id, 'Nombre')">
+              <mat-icon>edit</mat-icon>
+              <span>Nombre</span>
+            </button>
+            <button mat-menu-item (click)="editAnuncio(element.id, 'Contenido')">
+              <mat-icon>edit</mat-icon>
+              <span>Contenido</span>
+            </button>
+            <button mat-menu-item (click)="editAnuncio(element.id, 'Redes Sociales')">
+              <mat-icon>edit</mat-icon>
+              <span>Redes Sociales</span>
+            </button>
+          </mat-menu>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
   </div>
 </div>
+

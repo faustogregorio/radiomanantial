@@ -1,7 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormArray, FormGroup } from '@angular/forms';
 import { trigger, transition, style, animate } from '@angular/animations';
-
+import { AnunciosService } from 'src/app/admin/anuncios/anuncios.service';
+import { MAIN_DOMAIN } from '../domain';
 @Component({
   selector: 'app-carousel',
   templateUrl: './carousel.component.html',
@@ -19,13 +20,9 @@ import { trigger, transition, style, animate } from '@angular/animations';
   ]
 })
 export class CarouselComponent implements OnInit, OnDestroy {
+  mainDomain = MAIN_DOMAIN;
   carouselForm: FormGroup;
-  carouselData = [
-    { id: 5, img: 'http://www.radiomanantial995.com/admin/imagenes/foto_260520_MBM.jpg' },
-    { id: 1, img: 'http://www.radiomanantial995.com/admin/imagenes/foto_260520_1M_HOTEL_DELFINES_FRONTAL.jpg' },
-
-
-  ];
+  carouselData = [];
   duration = '0ms';
   slideDown = 0;
   slideUp = 19;
@@ -33,23 +30,55 @@ export class CarouselComponent implements OnInit, OnDestroy {
   slideUpInterval;
   carouselDirection = 'down';
   constructor(
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private anunciosService: AnunciosService
   ) {
     this.carouselForm = this.formBuilder.group({
       carousel: this.formBuilder.array([])
     });
+    this.carouselData.push({ id: 0, img: `assets/img/anunciate.jpg` });
   }
 
   ngOnInit(): void {
-    while (this.carousel.length < 20) {
-      for (const slide of this.carouselData) {
-        this.carousel.insert(0, this.formBuilder.group({
-          id: slide.id,
-          img: slide.img
-        }));
+    this.anunciosService.anunciosChange.subscribe(
+      (result: { id: number, img: string, operation: string }) => {
+        if (result.id !== 0) {
+          if (result.operation === 'add') {
+            this.carouselData.push(result);
+          } else if (result.operation === 'update') {
+            this.carouselData = this.carouselData.filter(
+              anuncio => {
+                if (anuncio.id !== result.id) {
+                  return anuncio;
+                } else {
+                  anuncio.img = result.img;
+                  return anuncio;
+                }
+              }
+            );
+          } else {
+            this.carouselData = this.carouselData.filter(anuncio => { if (anuncio.id !== result.id) return anuncio });
+          }
+          this.slideDown = 0;
+          this.slideUp = 19;
+          this.carouselForm.patchValue({
+            carousel: []
+          });
+          this.initCarousel();
+
+        }
       }
-    }
-    this.slideUp = this.carousel.length;
+    );
+    this.anunciosService.getSliders().subscribe(
+      result => {
+        if (result['success']) {
+          this.carouselData = [this.carouselData[0], ...result['data']];
+          this.initCarousel();
+        }
+      }, error => {
+        console.log('ERROR: ', error);
+      }
+    );
     this.infiniteSlideDown();
     window.addEventListener('focus', () => {
       this.clearIntervals();
@@ -60,7 +89,19 @@ export class CarouselComponent implements OnInit, OnDestroy {
       this.clearIntervals();
     });
   }
-
+  initCarousel() {
+    if (this.carouselData.length > 0) {
+      while (this.carousel.length < 20) {
+        for (const slide of this.carouselData) {
+          this.carousel.insert(0, this.formBuilder.group({
+            id: slide.id,
+            img: slide.id === 0 ? slide.img : `${this.mainDomain}/uploads/${slide.img}`
+          }));
+        }
+      }
+      this.slideUp = this.carousel.length;
+    }
+  }
   get carousel() {
     return this.carouselForm.get('carousel') as FormArray;
   }
@@ -113,7 +154,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   initSlide(data: any) {
     return this.formBuilder.group({
       id: data.id,
-      img: data.img
+      img: data.id === 0 ? data.img : `${this.mainDomain}/uploads/${data.img}`
     });
   }
 

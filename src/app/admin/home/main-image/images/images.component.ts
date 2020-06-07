@@ -3,7 +3,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { BehaviorSubject, Subscription, Observable } from 'rxjs';
 import { MainImageService } from '../main-image.service';
 import { MAIN_DOMAIN } from '../../../../shared/domain';
-import { trigger, transition, style, animate, state } from '@angular/animations';
 import { map } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSlideToggle } from '@angular/material/slide-toggle';

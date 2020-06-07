@@ -1,0 +1,43 @@
+<div
+  [formGroup]="redeSocialeForm"
+  fxFlex="100%"
+  fxLayout="row"
+  fxLayoutAlign="space-between center"
+>
+  <mat-form-field appearance="outline" floatLabel="always" fxFlex="30%">
+    <mat-label>Red Social</mat-label>
+    <mat-select formControlName="id" name="id" (selectionChange)="onChange()">
+      <mat-option
+        *ngFor="let redSocial of redesSocialesDatos"
+        [value]="redSocial.id"
+      >
+        <span fxLayoutAlign="start center" fxLayoutGap="10px">
+          <img
+            [src]="mainDomain + '/uploads/logos/' + redSocial.logo"
+            alt=""
+            height="15px"
+          />
+          <span>{{ redSocial.nombre }}</span>
+        </span>
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field appearance="outline" floatLabel="always" fxFlex="60%">
+    <mat-label>URL</mat-label>
+    <input
+      matInput
+      type="url"
+      placeholder="Ingresar dirección web"
+      formControlName="url"
+      required
+    />
+  </mat-form-field>
+  <button
+    mat-icon-button
+    type="button"
+    color="warn"
+    (click)="emitRedSocialIndex()"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+</div>

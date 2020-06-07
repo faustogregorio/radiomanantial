@@ -17,13 +17,15 @@ import { CarouselComponent } from './shared/carousel/carousel.component';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { SlideComponent } from './shared/carousel/slide/slide.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FooterComponent } from './shared/footer/footer.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import {MatMenuModule} from '@angular/material/menu';
+import { QuillModule } from 'ngx-quill';
+import {MatSelectModule} from '@angular/material/select';
+import { ViewAnuncianteComponent } from './shared/view-anunciante/view-anunciante.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,7 @@ import {MatMenuModule} from '@angular/material/menu';
     RadioComponent,
     CarouselComponent,
     SlideComponent,
-    FooterComponent
+    ViewAnuncianteComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +51,9 @@ import {MatMenuModule} from '@angular/material/menu';
     MatDialogModule,
     HttpClientModule,
     MatSnackBarModule,
-    MatMenuModule
+    MatMenuModule,
+    QuillModule.forRoot(),
+    MatSelectModule
   ],
   entryComponents: [
   ],

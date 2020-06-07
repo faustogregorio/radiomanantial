@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { AdminRoutingModule } from './admin-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { ReactiveFormsModule } from '@angular/forms';
 import { AdminComponent } from './admin.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { HomeComponent } from './home/home.component';
@@ -18,20 +18,45 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AnunciosComponent } from './anuncios/anuncios.component';
 import { AddAnuncioComponent } from './anuncios/add-anuncio/add-anuncio.component';
 import { ViewAnunciosComponent } from './anuncios/view-anuncios/view-anuncios.component';
+import { QuillModule } from 'ngx-quill';
+import { SocialNetworksComponent } from './anuncios/add-anuncio/social-networks/social-networks.component';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+import {MatDividerModule} from '@angular/material/divider';
+import { EditAnuncioComponent } from './anuncios/edit-anuncio/edit-anuncio.component';
+import {MatMenuModule} from '@angular/material/menu';
 
 @NgModule({
-  declarations: [AdminComponent, HomeComponent, MainImageComponent, ImagesComponent, AnunciosComponent, AddAnuncioComponent, ViewAnunciosComponent],
+  declarations: [
+    AdminComponent,
+    HomeComponent,
+    MainImageComponent,
+    ImagesComponent,
+    AnunciosComponent,
+    AddAnuncioComponent,
+    ViewAnunciosComponent,
+    SocialNetworksComponent,
+    EditAnuncioComponent
+  ],
   imports: [
     CommonModule,
     AdminRoutingModule,
     BrowserAnimationsModule,
+    ReactiveFormsModule,
     FlexLayoutModule,
     MatTableModule,
     MatSlideToggleModule,
     MatIconModule,
     MatButtonModule,
     MatProgressSpinnerModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    QuillModule.forRoot(),
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatDividerModule,
+    MatMenuModule
   ],
   entryComponents: [
     MainImageComponent,

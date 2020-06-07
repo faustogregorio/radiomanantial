@@ -1,0 +1,192 @@
+<div
+  style="width: 100%; position: relative;"
+  fxLayout="row wrap"
+  fxLayoutAlign="center"
+>
+  <mat-icon
+    style="right: 0; top: 0; position: absolute; cursor: pointer;"
+    (click)="closeDialog()"
+    >close</mat-icon
+  >
+  <div fxFlex="100%" fxLayoutAlign="center start">
+    <h2>Modificar {{ data.edit }} del Anunciante</h2>
+  </div>
+  <div [formGroup]="formAnuncio" fxLayout="row wrap" fxFlex="100%">
+    <div
+      fxFlex="100%"
+      fxLayoutAlign="center start"
+      [fxShow]="data.edit === 'Imagen Principal' ? 'true' : 'false'"
+    >
+      <div fxFlex="50%" fxLayoutAlign="start center" fxLayoutGap="10px">
+        <input
+          style="display: none;"
+          type="file"
+          accept="image/*"
+          (change)="onFileChange($event)"
+          #file
+        />
+        <label for="">Imgen principal: </label>
+
+        <button
+          mat-stroked-button
+          type="button"
+          color="accent"
+          (click)="addFile()"
+        >
+          <mat-icon>add_photo_alternate</mat-icon>
+        </button>
+        <img
+          [src]="fileImageSrc ? mainDomain + '/uploads/' + fileImageSrc : ''"
+          alt=""
+          height="150px"
+          #image
+        />
+      </div>
+    </div>
+
+    <div
+      fxFlex="100%"
+      fxLayoutAlign="center start"
+      [fxShow]="data.edit === 'Logo' ? 'true' : 'false'"
+    >
+      <div fxFlex="50%" fxLayoutAlign="start center" fxLayoutGap="10px">
+        <input
+          style="display: none;"
+          type="file"
+          accept="image/*"
+          (change)="onFileChangeLogo($event)"
+          #fileLogo
+        />
+        <label for="">Logo: </label>
+
+        <button
+          mat-stroked-button
+          type="button"
+          color="accent"
+          (click)="addFileLogo()"
+        >
+          <mat-icon>add_photo_alternate</mat-icon>
+        </button>
+        <img
+          [src]="fileImageSrc ? mainDomain + '/uploads/' + fileImageSrc : ''"
+          alt=""
+          height="100px"
+          #imageLogo
+        />
+      </div>
+    </div>
+
+    <div
+      fxFlex="100%"
+      fxLayoutAlign="center start"
+      *ngIf="data.edit === 'Nombre'"
+    >
+      <div fxFlex="50%" fxLayout="row wrap" fxLayoutAlign="start center">
+        <label for="" style="margin-top: 20px;">Nombre: </label>
+        <quill-editor
+          fxFlex="100%"
+          placeholder="Nombre del anunciante..."
+          theme="bubble"
+          (onContentChanged)="getDataNombre($event)"
+          (onEditorCreated)="getQuillNombre($event)"
+        ></quill-editor>
+      </div>
+    </div>
+
+    <div
+      fxFlex="100%"
+      fxLayoutAlign="center start"
+      [fxShow]="data.edit === 'Imagenes' ? 'true' : 'false'"
+    >
+      <div fxFlex="50%" fxLayoutAlign="space-between center">
+        <div fxFlex="100%" fxLayout="row wrap" fxLayoutAlign="start center">
+          <input
+            style="display: none;"
+            type="file"
+            accept="image/*"
+            (change)="onFileChangeImagenes($event)"
+            multiple
+            #files
+          />
+          <label for="" style="margin-right: 10px;">Imagenes: </label>
+
+          <button
+            mat-stroked-button
+            type="button"
+            color="accent"
+            (click)="addFileImagenes()"
+          >
+            <mat-icon>collections</mat-icon>
+          </button>
+          <img
+            style="margin: 10px;"
+            *ngFor="let imagen of imagenes"
+            [src]="imagen"
+            height="100px"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      fxFlex="100%"
+      fxLayoutAlign="center start"
+      *ngIf="data.edit === 'Contenido'"
+    >
+      <div fxFlex="50%" fxLayout="row wrap" fxLayoutAlign="start center">
+        <label for="" style="margin-top: 20px;">Contenido: </label>
+        <quill-editor
+          fxFlex="100%"
+          placeholder="Ingrese descripción/contenido aquí"
+          theme="snow"
+          (onContentChanged)="getDataContenido($event)"
+          (onEditorCreated)="getQuillContenido($event)"
+        ></quill-editor>
+      </div>
+    </div>
+
+    <div
+      fxFlex="100%"
+      fxLayoutAlign="center start"
+      style="margin-top: 20px;"
+      *ngIf="data.edit === 'Redes Sociales'"
+    >
+      <div fxFlex="50%" fxLayout="row wrap" fxLayoutAlign="center">
+        <button
+          mat-stroked-button
+          color="primary"
+          type="button"
+          color="accent"
+          (click)="addSocialNetwork()"
+        >
+          <mat-icon>add</mat-icon> Red Social
+        </button>
+        <div fxFlex="100%" formArrayName="redesSociales">
+          <div
+            style="margin-top: 10px;"
+            *ngFor="let redSocial of socialNetworks.controls; let i = index"
+            @insertRemoveTrigger
+          >
+            <app-social-networks
+              [redesSocialesDatos]="redesSocialesDatos"
+              [redeSocialeForm]="redSocial"
+              [index]="i"
+              (onRemoveRedSocial)="handleRemoveSocialNetwork($event)"
+            ></app-social-networks>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top: 40px;" fxFlex="100%" fxLayoutAlign="center start">
+      <button
+        style="padding: 10px;"
+        mat-flat-button
+        color="primary"
+        (click)="saveAnuncio()"
+      >
+        Modificar {{ data.edit }}
+      </button>
+    </div>
+  </div>
+  <!-- <quill-editor style="width: 100%;" placeholder="Ingrese texto aquí"  theme="snow" (onContentChanged)="getText($event)" (onEditorCreated)="getQuill($event)" ></quill-editor>
+  <quill-view-html [content]="htmlstring" theme="snow"></quill-view-html> -->
+</div>
