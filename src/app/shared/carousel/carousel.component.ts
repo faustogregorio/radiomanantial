@@ -79,7 +79,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
         console.log('ERROR: ', error);
       }
     );
-    this.infiniteSlideDown();
+    /* this.infiniteSlideDown();
     window.addEventListener('focus', () => {
       this.clearIntervals();
       this.mouseLeaveContainer();
@@ -87,7 +87,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     });
     window.addEventListener('blur', () => {
       this.clearIntervals();
-    });
+    }); */
   }
   initCarousel() {
     if (this.carouselData.length > 0) {

@@ -1,4 +1,4 @@
-<div
+<!-- <div
   style="height: 100%; width: 200px; background-color: transparent;"
   fxLayout="row"
 >
@@ -12,7 +12,7 @@
       ¡Ya Párate!, Facundo
     </span>
   </div>
-</div>
+</div> -->
 <div fxLayoutAlign="center center" fxLayoutGap="5px">
   <button mat-fab color="primary" (click)="playRadio()">
     <mat-icon>{{paused ? 'play_arrow' : 'pause'}}</mat-icon>
@@ -21,7 +21,7 @@
     <mat-icon [style.color]="live ? 'red' : 'grey'">lens</mat-icon>
   </button> -->
 
-  <div style="height: 100%;" fxLayout="row" fxLayoutAlign="center center">
+  <div style="height: 100%;" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="-15px">
     <button mat-icon-button [color]="audioOff ? '' : 'primary'" (click)="onAudioOff()">
       <mat-icon *ngIf="!audioOff">{{volumeIcon}}</mat-icon>
       <mat-icon *ngIf="audioOff">volume_off</mat-icon>

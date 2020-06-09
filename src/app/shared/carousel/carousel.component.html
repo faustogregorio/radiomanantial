@@ -17,7 +17,7 @@
       (mouseenter)="mouseEnter('up')"
       (mouseleave)="mouseLeave('up')"
       (click)="removeBottomSlide()"
-      style="position: absolute;z-index: 2;top: -15px;"
+      style="position: absolute;z-index: 2;top: 15px;"
     >
       <mat-icon>keyboard_arrow_up</mat-icon>
     </button>
@@ -29,7 +29,7 @@
       (mouseenter)="mouseEnter('down')"
       (mouseleave)="mouseLeave('down')"
       (click)="addSlide()"
-      style="position: absolute;z-index: 2;bottom: calc(64px - 15px);"
+      style="position: absolute;z-index: 2;bottom: calc(64px + 15px);"
     >
       <mat-icon>keyboard_arrow_down</mat-icon>
     </button>

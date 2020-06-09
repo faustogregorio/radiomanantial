@@ -12,24 +12,28 @@
       </button>
 
       <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
-        <div
+        <a
           style="height: 100%;"
           fxLayoutAlign="start center"
           fxLayoutGap="4px"
+          href="https://www.facebook.com/RadioManantialMexico/"
+          target="_blank"
+          style="color: white;"
         >
           <img src="assets/img/facebook-logo.svg" alt="" height="26px" />
-          <a
-            href="https://www.facebook.com/RadioManantialMexico/"
-            target="_blank"
-            style="color: white;"
-            >Radio Manantial</a
-          >
-        </div>
-
-        <div style="height: 100%;" fxLayoutAlign="start center">
+          <span>Radio Manantial</span>
+        </a>
+        <a
+          style="height: 100%;"
+          fxLayoutAlign="start center"
+          fxLayoutGap="4px"
+          href="https://api.whatsapp.com/send?phone=523511044183&text=&source=&data=&app_absent="
+          target="_blank"
+          style="color: white;"
+        >
           <img src="assets/img/whatsapp.png" alt="" height="30px" />
           <span>351 104 4183</span>
-        </div>
+        </a>
         <div style="height: 100%;" fxLayoutAlign="start center">
           <mat-icon>phone</mat-icon>
           <span>355 553 3549 </span>
@@ -66,14 +70,12 @@
         >
         <a mat-list-item (click)="viewAnuncios()"
           ><span fxLayout="row" fxLayoutGap="20px"
-            ><mat-icon>view_list</mat-icon>
-            <span>ANUNCIANTES</span></span
+            ><mat-icon>view_list</mat-icon> <span>ANUNCIANTES</span></span
           ></a
         >
         <a mat-list-item (click)="addAnuncio()"
           ><span fxLayout="row" fxLayoutGap="20px"
-            ><mat-icon>add_box</mat-icon>
-            <span>AGREGAR ANUNCIANTE</span></span
+            ><mat-icon>add_box</mat-icon> <span>AGREGAR ANUNCIANTE</span></span
           ></a
         >
         <a mat-list-item (click)="logout(snav)"
@@ -122,4 +124,3 @@
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>
-
