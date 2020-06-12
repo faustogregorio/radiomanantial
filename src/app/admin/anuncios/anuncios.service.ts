@@ -26,12 +26,19 @@ export class AnunciosService {
     return this.http.get(`${this.url}/anuncios/sliders`);
   }
 
+  getAnuncio(id: number) {
+    return this.http.get(`${this.url}/anuncios/${id}`);
+  }
   saveAnuncio(formData: FormData) {
     return this.http.post(`${this.url}/anuncios`, formData);
   }
 
   getAnuncios() {
     return this.http.get(`${this.url}/anuncios`);
+  }
+
+  getVisitas(id) {
+    return this.http.get(`${this.url}/anuncios/visitas/${id}`);
   }
 
   deleteAnuncio(id, foto, logo) {

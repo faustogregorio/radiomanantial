@@ -78,6 +78,16 @@
             ><mat-icon>add_box</mat-icon> <span>AGREGAR ANUNCIANTE</span></span
           ></a
         >
+        <a mat-list-item (click)="viewModulos()"
+          ><span fxLayout="row" fxLayoutGap="20px"
+            ><mat-icon>view_list</mat-icon> <span>MODULOS</span></span
+          ></a
+        >
+        <a mat-list-item (click)="addModulo()"
+          ><span fxLayout="row" fxLayoutGap="20px"
+            ><mat-icon>add_box</mat-icon> <span>AGREGAR MODULO</span></span
+          ></a
+        >
         <a mat-list-item (click)="logout(snav)"
           ><span fxLayout="row" fxLayoutGap="20px"
             ><mat-icon>person_outline</mat-icon>
@@ -88,7 +98,7 @@
     </mat-sidenav>
 
     <mat-sidenav-content>
-      <div style="width: 100%;" fxLayoutAlign="center start">
+      <div style="width: 100%;overflow-x: hidden;" fxLayoutAlign="center start">
         <div class="anuncio">
           <app-carousel
             style="width: 100%;"

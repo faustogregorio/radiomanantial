@@ -26,6 +26,13 @@ import {MatMenuModule} from '@angular/material/menu';
 import { QuillModule } from 'ngx-quill';
 import {MatSelectModule} from '@angular/material/select';
 import { ViewAnuncianteComponent } from './shared/view-anunciante/view-anunciante.component';
+import { AnuncioSliderComponent } from './shared/view-anunciante/anuncio-slider/anuncio-slider.component';
+import { AnuncioSlideComponent } from './shared/view-anunciante/anuncio-slider/anuncio-slide/anuncio-slide.component';
+import {MatBadgeModule} from '@angular/material/badge';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { ModuloService } from './admin/modulos/modulo.service';
+import { AnunciosService } from './admin/anuncios/anuncios.service';
+import { AuthService } from './auth/auth.service';
 
 @NgModule({
   declarations: [
@@ -33,7 +40,10 @@ import { ViewAnuncianteComponent } from './shared/view-anunciante/view-anunciant
     RadioComponent,
     CarouselComponent,
     SlideComponent,
-    ViewAnuncianteComponent
+    ViewAnuncianteComponent,
+    AnuncioSliderComponent,
+    AnuncioSlideComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
@@ -53,9 +63,11 @@ import { ViewAnuncianteComponent } from './shared/view-anunciante/view-anunciant
     MatSnackBarModule,
     MatMenuModule,
     QuillModule.forRoot(),
-    MatSelectModule
+    MatSelectModule,
+    MatBadgeModule
   ],
   entryComponents: [
+    ViewAnuncianteComponent
   ],
   providers: [
     CookieService,
@@ -63,7 +75,10 @@ import { ViewAnuncianteComponent } from './shared/view-anunciante/view-anunciant
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptorService,
       multi: true
-    }
+    },
+    ModuloService,
+    AnunciosService,
+    AuthService
   ],
   bootstrap: [AppComponent]
 })

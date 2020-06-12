@@ -1,0 +1,48 @@
+<div
+  [formGroup]="carouselForm"
+  id="carousel-container"
+  fxFlex="1000px"
+  fxLayoutAlign="start center"
+  style="position: relative;margin-top: 10px;"
+>
+  <button
+    mat-mini-fab
+    color="primary"
+    type="button"
+    color="primary"
+    (mouseenter)="mouseEnter('left')"
+    (mouseleave)="mouseLeave('left')"
+    (click)="removeSlide()"
+    style="position: absolute; z-index: 2; left: 15px;"
+  >
+    <mat-icon>keyboard_arrow_left</mat-icon>
+  </button>
+  <button
+    mat-mini-fab
+    color="primary"
+    type="button"
+    color="primary"
+    (mouseenter)="mouseEnter('right')"
+    (mouseleave)="mouseLeave('right')"
+    (click)="addSlide()"
+    style="position: absolute; z-index: 2; right: 15px;"
+  >
+    <mat-icon>keyboard_arrow_right</mat-icon>
+  </button>
+  <div
+    style="width: 100%; overflow: hidden;"
+    fxLayout="row"
+    formArrayName="carousel"
+  >
+    <div
+      *ngFor="let slide of carousel.controls"
+      [@insertRemoveTrigger]="{value: 0, params:{duration: duration}}"
+      (mouseenter)="mouseEnterContainer()"
+      (mouseleave)="mouseLeaveContainer()"
+      fxFlex="1000px"
+      style="height: 500px; background-color: transparent;"
+    >
+      <app-anuncio-slide [slideForm]="slide"></app-anuncio-slide>
+    </div>
+  </div>
+</div>

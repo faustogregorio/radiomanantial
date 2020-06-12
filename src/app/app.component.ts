@@ -11,6 +11,8 @@ import { Router } from '@angular/router';
 import { AnunciosComponent } from './admin/anuncios/anuncios.component';
 import { AddAnuncioComponent } from './admin/anuncios/add-anuncio/add-anuncio.component';
 import { ViewAnunciosComponent } from './admin/anuncios/view-anuncios/view-anuncios.component';
+import { AddModuloComponent } from './admin/modulos/add-modulo/add-modulo.component';
+import { ViewModulosComponent } from './admin/modulos/view-modulos/view-modulos.component';
 
 @Component({
   selector: 'app-root',
@@ -114,6 +116,30 @@ export class AppComponent implements OnDestroy {
   viewAnuncios() {
     this.snav.close();
     const dialogRef = this.dialog.open(ViewAnunciosComponent, {
+      height: this.mobileQuery.matches ? '100vh' : '90vh',
+      width: this.mobileQuery.matches ? '100vw' : '90vw',
+      autoFocus: false,
+    });
+    dialogRef.afterClosed().subscribe(result => {
+
+    });
+  }
+
+  addModulo() {
+    this.snav.close();
+    const dialogRef = this.dialog.open(AddModuloComponent, {
+      height: this.mobileQuery.matches ? '100vh' : '90vh',
+      width: this.mobileQuery.matches ? '100vw' : '90vw',
+      autoFocus: false,
+    });
+    dialogRef.afterClosed().subscribe(result => {
+
+    });
+  }
+
+  viewModulos() {
+    this.snav.close();
+    const dialogRef = this.dialog.open(ViewModulosComponent, {
       height: this.mobileQuery.matches ? '100vh' : '90vh',
       width: this.mobileQuery.matches ? '100vw' : '90vw',
       autoFocus: false,

@@ -9,23 +9,23 @@ import { FormGroup } from '@angular/forms';
 export class SlideComponent implements OnInit {
 
   @Input() slideForm: FormGroup;
-  @Output() onRemoveSlide = new EventEmitter<number>();
+  @Output() onClickSlide = new EventEmitter<number>();
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  emitSlideIndex() {
-    this.onRemoveSlide.emit(0);
+  emitSlideIndex(id: number) {
+    this.onClickSlide.emit(id);
   }
-  onChange() {
+  /* onChange() {
     this.slideForm.patchValue({
       id: this.slideForm.value.id,
       img: this.slideForm.value.img
     });
     console.log(this.slideForm);
-  }
+  } */
   get id() {
     return this.slideForm.get('id').value;
   }

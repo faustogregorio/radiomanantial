@@ -1,0 +1,121 @@
+<div
+  style="width: 100%; position: relative; overflow: hidden;"
+  fxLayout="row wrap"
+  fxLayoutAlign="center start"
+>
+  <mat-icon
+    style="right: 0; top: 0; position: absolute; cursor: pointer;"
+    (click)="closeDialog()"
+    >close</mat-icon
+  >
+  <h2>Editar Módulo</h2>
+  <div fxFlex="100%" fxLayoutAlign="center start">
+    <div fxFlex="1200px">
+      <quill-editor
+        fxFlex="100%"
+        style="max-height: 100%;"
+        placeholder="Contenido del modulo..."
+        theme="snow"
+        (onContentChanged)="getDataModulo($event)"
+        (onEditorCreated)="getQuillModulo($event)"
+      ></quill-editor>
+    </div>
+  </div>
+  <div fxFlex="100%" fxLayoutAlign="center start" style="margin-top: 60px;">
+    <mat-form-field appearance="outline" floatLabel="always">
+      <mat-label>Nombre</mat-label>
+      <input matInput [formControl]="nombreControl" />
+      <mat-hint>Ingrese nombre del módulo</mat-hint>
+    </mat-form-field>
+  </div>
+  <div fxFlex="100%" fxLayoutAlign="center start" >
+    <button
+      mat-flat-button
+      color="accent"
+      (click)="generateFiles()"
+    >
+      <mat-icon>text_snippet</mat-icon>Generar Archivos
+    </button>
+  </div>
+  <mat-divider style="width: 100%;margin: 20px 0px;"></mat-divider>
+
+  <div
+    fxFlex="100%"
+    fxLayout="column"
+    fxLayoutAlign="start center"
+    style="margin-top: 10px;"
+  >
+  <h3>Agregar Archivo "<span style="color: teal;">{{nombre + '_HTML.txt'}}</span>"</h3>
+
+    <div>
+      <input
+        style="display: none;"
+        type="file"
+        accept="text/plain"
+        (change)="onFileHTMLChange($event)"
+        #fileHTML
+      />
+
+      <button
+        mat-stroked-button
+        type="button"
+        color="accent"
+        (click)="addFileHTML()"
+      >
+        <mat-icon>post_add</mat-icon> Buscar Archivo
+      </button>
+    </div>
+    <div *ngIf="textFileHTML" fxLayout="column" fxLayoutAlign="start center">
+      <mat-icon style="font-size: 60px;margin: 20px 0px;color: green;" inline="true">text_snippet</mat-icon>
+      <p class="mat-small" >{{filenameHTML}}</p>
+    </div>
+  </div>
+  <mat-divider style="width: 100%;margin: 20px 0px;"></mat-divider>
+  <div
+    fxFlex="100%"
+    fxLayout="column"
+    fxLayoutAlign="start center"
+    style="margin-top: 10px;"
+  >
+  <h3>Agregar Archivo "<span style="color: teal;">{{nombre + '_OBJECT.txt'}}</span>"</h3>
+    <div fxLayoutGap="10px">
+      <input
+        style="display: none;"
+        type="file"
+        accept="text/plain"
+        (change)="onFileJSONChange($event)"
+        #fileJSON
+      />
+
+      <button
+        mat-stroked-button
+        type="button"
+        color="accent"
+        (click)="addFileJSON()"
+      >
+        <mat-icon>post_add</mat-icon> Buscar Archivo
+      </button>
+    </div>
+    <div *ngIf="textFileJSON" fxLayout="column" fxLayoutAlign="start center">
+      <mat-icon style="font-size: 60px;margin: 20px 0px;color: green;" inline="true">text_snippet</mat-icon>
+      <p class="mat-small">{{filenameJSON}}</p>
+    </div>
+  </div>
+  <mat-divider style="width: 100%;margin: 20px 0px;"></mat-divider>
+  <div fxFlex="100%" fxLayoutAlign="center start" style="margin-bottom: 20px;">
+    <button
+      mat-flat-button
+      color="primary"
+      style="padding: 10px;"
+      (click)="saveModulo()"
+    >
+      Modificar Módulo
+    </button>
+  </div>
+  <a download="moduloHTML.txt" id="moduloHTML" style="display: none;"
+    >Download</a
+  >
+  <a download="moduloJSON.txt" id="moduloJSON" style="display: none;"
+    >Download</a
+  >
+</div>

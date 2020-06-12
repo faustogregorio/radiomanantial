@@ -1,0 +1,7 @@
+::ng-deep mat-dialog-container {
+  -ms-overflow-style: none !important; /* Internet Explorer 10+ */
+  scrollbar-width: none !important; /* Firefox */
+}
+::ng-deep mat-dialog-container::-webkit-scrollbar {
+  width: 0px !important;
+}

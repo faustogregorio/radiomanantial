@@ -1,8 +1,11 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormArray, FormGroup } from '@angular/forms';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { AnunciosService } from 'src/app/admin/anuncios/anuncios.service';
 import { MAIN_DOMAIN } from '../domain';
+import { MatDialog } from '@angular/material/dialog';
+import { MediaMatcher } from '@angular/cdk/layout';
+import { ViewAnuncianteComponent } from '../view-anunciante/view-anunciante.component';
 @Component({
   selector: 'app-carousel',
   templateUrl: './carousel.component.html',
@@ -20,6 +23,9 @@ import { MAIN_DOMAIN } from '../domain';
   ]
 })
 export class CarouselComponent implements OnInit, OnDestroy {
+  mobileQuery: MediaQueryList;
+  private _mobileQueryListener: () => void;
+
   mainDomain = MAIN_DOMAIN;
   carouselForm: FormGroup;
   carouselData = [];
@@ -30,13 +36,19 @@ export class CarouselComponent implements OnInit, OnDestroy {
   slideUpInterval;
   carouselDirection = 'down';
   constructor(
+    changeDetectorRef: ChangeDetectorRef,
+    media: MediaMatcher,
     private formBuilder: FormBuilder,
-    private anunciosService: AnunciosService
+    private anunciosService: AnunciosService,
+    public dialog: MatDialog
   ) {
     this.carouselForm = this.formBuilder.group({
       carousel: this.formBuilder.array([])
     });
     this.carouselData.push({ id: 0, img: `assets/img/anunciate.jpg` });
+    this.mobileQuery = media.matchMedia('(max-width: 600px)');
+    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+    this.mobileQuery.addListener(this._mobileQueryListener);
   }
 
   ngOnInit(): void {
@@ -65,7 +77,6 @@ export class CarouselComponent implements OnInit, OnDestroy {
             carousel: []
           });
           this.initCarousel();
-
         }
       }
     );
@@ -79,7 +90,8 @@ export class CarouselComponent implements OnInit, OnDestroy {
         console.log('ERROR: ', error);
       }
     );
-    /* this.infiniteSlideDown();
+    this.infiniteSlideDown();
+    /*
     window.addEventListener('focus', () => {
       this.clearIntervals();
       this.mouseLeaveContainer();
@@ -174,22 +186,37 @@ export class CarouselComponent implements OnInit, OnDestroy {
   infiniteSlideDown() {
     this.slideDownInterval = setInterval(() => {
       this.addSlide();
-    }, 3000);
+    }, 4000);
 
   }
   infiniteSlideUp() {
     this.slideUpInterval = setInterval(() => {
       this.removeBottomSlide();
-    }, 3000);
+    }, 4000);
   }
 
   ngOnDestroy(): void {
+    this.mobileQuery.removeListener(this._mobileQueryListener);
+
     if (this.slideDownInterval) {
       clearInterval(this.slideDownInterval);
     }
     if (this.slideUpInterval) {
       clearInterval(this.slideUpInterval);
     }
+  }
+
+  onSelectedAnuncio(id) {
+    if (id === 0) return;
+    const dialogRef = this.dialog.open(ViewAnuncianteComponent, {
+      data: id,
+      height: 'calc(100vh - 60px)',
+      width: this.mobileQuery.matches ? '100vw' : '80vw',
+      autoFocus: false,
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
   }
 
 }

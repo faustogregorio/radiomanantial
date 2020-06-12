@@ -26,6 +26,10 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatDividerModule} from '@angular/material/divider';
 import { EditAnuncioComponent } from './anuncios/edit-anuncio/edit-anuncio.component';
 import {MatMenuModule} from '@angular/material/menu';
+import { ModulosComponent } from './modulos/modulos.component';
+import { ViewModulosComponent } from './modulos/view-modulos/view-modulos.component';
+import { AddModuloComponent } from './modulos/add-modulo/add-modulo.component';
+import { EditModuloComponent } from './modulos/edit-modulo/edit-modulo.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +41,11 @@ import {MatMenuModule} from '@angular/material/menu';
     AddAnuncioComponent,
     ViewAnunciosComponent,
     SocialNetworksComponent,
-    EditAnuncioComponent
+    EditAnuncioComponent,
+    ModulosComponent,
+    ViewModulosComponent,
+    AddModuloComponent,
+    EditModuloComponent
   ],
   imports: [
     CommonModule,
@@ -60,7 +68,9 @@ import {MatMenuModule} from '@angular/material/menu';
   ],
   entryComponents: [
     MainImageComponent,
-    ImagesComponent
+    ImagesComponent,
+    AddModuloComponent,
+    ViewModulosComponent
   ]
 })
 export class AdminModule { }

@@ -1,23 +1,44 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { MatSliderChange } from '@angular/material/slider';
-
+import { ModuloService } from 'src/app/admin/modulos/modulo.service';
+import { Router } from '@angular/router';
+import { MAIN_DOMAIN } from '../domain';
+export interface Modulo {
+  id: number;
+  nombre: string;
+  htmlNombre: string;
+  jsonNombre: string;
+}
 @Component({
   selector: 'app-radio',
   templateUrl: './radio.component.html',
   styleUrls: ['./radio.component.scss']
 })
 export class RadioComponent implements OnInit {
+  mainDomain = MAIN_DOMAIN;
   radio = new Audio('http://167.114.116.223:2109/;stream/1');
   paused = true;
   /* live = false; */
   audioOff = false;
   volumeIcon = 'volume_up';
-  constructor() {
-    this.radio.autoplay = true;
+  modulos: Modulo[];
+  constructor(
+    private moduloService: ModuloService,
+    private router: Router,
+
+  ) {
+    this.radio.autoplay = false;
   }
 
 
   ngOnInit(): void {
+    this.moduloService.getModulos().subscribe(
+      result => {
+        if (result['success']) {
+          this.modulos = result['data'];
+        }
+      }
+    );
     /* this.radio.play();
     setTimeout(() => {
       if (this.radio.currentTime > 0) {
@@ -50,6 +71,22 @@ export class RadioComponent implements OnInit {
     this.audioOff = !this.audioOff;
     this.radio.muted = this.audioOff;
     console.log(this.radio);
+  }
+
+  async navigationModule(id: number, htmlModulo) {
+    let text;
+    const htmlTextURL = `${this.mainDomain}/uploads/${htmlModulo}`;
+    const response = await fetch(htmlTextURL);
+
+    if (response.ok) {
+      text = await response.text();
+      this.moduloService.loadModulo(text);
+    } else {
+      // alert("HTTP-Error: " + response.status);
+      this.router.navigate(['/not-found']);
+    }
+
+    this.router.navigate([`/modulo/${id}`]);
   }
 
   onSliderChange(event: MatSliderChange) {
