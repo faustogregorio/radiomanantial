@@ -1,0 +1,9 @@
+button {
+  display: none;
+}
+
+#carousel-container:hover {
+  button {
+    display: block;
+  }
+}

@@ -1,16 +1,8 @@
 <div
-  style="
-    width: 100%;
-    height: 200px;
-    background-color: transparent;
-  "
+  class="slide"
   [style.cursor]="id === 0 ? 'default' : 'pointer'"
   (click)="emitSlideIndex(id)"
 >
-  <!-- <p>slide works! {{index}}</p>
-  <button mat-icon-button type="button" color="warn" (click)="emitSlideIndex()">
-    <mat-icon>close</mat-icon>
-  </button> -->
   <img
     [src]="img"
     alt=""

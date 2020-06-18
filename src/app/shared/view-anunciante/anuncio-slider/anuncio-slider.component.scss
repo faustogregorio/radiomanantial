@@ -3,9 +3,26 @@ button {
 }
 
 #carousel-container:hover {
-
   button {
     display: block;
   }
 }
-
+.slider {
+  height: 500px;
+  background-color: transparent;
+}
+@media screen and (max-width: 1279px) and (min-width: 960px) {
+  .slider {
+    height: 400px;
+  }
+}
+@media screen and (max-width: 959px) and (min-width: 600px) {
+  .slider {
+    height: 300px;
+  }
+}
+@media screen and (max-width: 599px) {
+  .slider {
+    height: 210px;
+  }
+}

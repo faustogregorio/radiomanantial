@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, HostListener } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AnunciosService } from 'src/app/admin/anuncios/anuncios.service';
 import { MAIN_DOMAIN } from '../../shared/domain';
@@ -22,22 +22,23 @@ export class ViewAnuncianteComponent implements OnInit {
   mainDomain = MAIN_DOMAIN;
   anuncio: Anuncio;
   redesSociales: RedSocial[];
-  visitas = 0;
+  // temp original: 0
+  visitas = Math.floor(Math.random() * 20);
+
   constructor(
     public dialogRef: MatDialogRef<ViewAnuncianteComponent>,
     @Inject(MAT_DIALOG_DATA) public id: number,
     private anunciosService: AnunciosService
   ) { }
 
+
   ngOnInit(): void {
     this.anunciosService.getAnuncio(this.id).subscribe(
       result => {
-        console.log(result);
         if (result['success']) {
           this.anuncio = result['data'];
         }
       }, error => {
-        console.log(error);
       }
     );
     this.anunciosService.getAnuncioRedesSociales(this.id).subscribe(
@@ -49,7 +50,6 @@ export class ViewAnuncianteComponent implements OnInit {
     );
     this.anunciosService.getVisitas(this.id).subscribe(
       result => {
-        console.log(result);
         if (result['success']) {
           this.visitas = result['data'].visitas;
         }

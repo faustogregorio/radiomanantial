@@ -18,6 +18,7 @@
       <input
         style="display: none;"
         type="file"
+        accept="image/*"
         (change)="onFileChange($event)"
         #file
       />
@@ -60,5 +61,5 @@
     mode="indeterminate"
     *ngIf="isUploading"
   ></mat-progress-spinner>
-  <app-images></app-images>
+  <app-images (onDelete)="onDeleteImage($event)"></app-images>
 </div>

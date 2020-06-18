@@ -15,15 +15,8 @@ export class AddModuloComponent implements OnInit {
   moduloJSON = '';
 
   nombreControl: FormControl;
-  @ViewChild('fileHTML', { static: true }) fileHTML: ElementRef;
-  @ViewChild('fileJSON', { static: true }) fileJSON: ElementRef;
 
-  textFileHTML;
-  textFileJSON;
-
-  filenameHTML;
-  filenameJSON;
-
+  isLoading = false;
   constructor(
     public dialogRef: MatDialogRef<AddModuloComponent>,
     private moduloService: ModuloService,
@@ -41,72 +34,39 @@ export class AddModuloComponent implements OnInit {
   closeDialog() {
     this.dialogRef.close();
   }
-  onFileHTMLChange(event) {
-    console.log(event);
-    this.textFileHTML = event.target.files[0];
-    this.filenameHTML = event.target.files[0].name;
-  }
-  addFileHTML() {
-    this.fileHTML.nativeElement.click();
-  }
-  onFileJSONChange(event) {
-    console.log(event);
-    this.textFileJSON = event.target.files[0];
-    this.filenameJSON = event.target.files[0].name;
 
-  }
-  addFileJSON() {
-    this.fileJSON.nativeElement.click();
-  }
   getDataModulo(quill) {
-    console.log('DATA_MODULO: ', quill);
     this.moduloHTML = quill.html;
     this.moduloJSON = JSON.stringify(quill.content.ops);
 
   }
 
   getQuillModulo(quill) {
-    console.log('QUILL_MODULO_CREATED: ', quill);
 
   }
 
-  generateFiles() {
-    console.log(this.nombreControl);
-    if (this.nombreControl.valid) {
-      const fileHTML = new Blob([this.moduloHTML], { type: 'text/plain' });
-      const fileJSON = new Blob([this.moduloJSON], { type: 'text/plain' });
-
-      let aHTML = document.getElementById('moduloHTML');
-      aHTML['download'] = this.nombreControl.value + '_HTML.txt';
-      aHTML['href'] = window.URL.createObjectURL(fileHTML);
-      aHTML.click();
-
-      let aJSON = document.getElementById('moduloJSON');
-      aJSON['download'] = this.nombreControl.value + '_OBJECT.txt';
-      aJSON['href'] = window.URL.createObjectURL(fileJSON);
-      aJSON.click();
-    } else {
-      this.openSnackBar('Agrege un nombre al Módulo');
-    }
-
-  }
   saveModulo() {
-    if (this.textFileHTML && this.textFileJSON && this.nombreControl.valid) {
+    if (this.nombreControl.valid) {
+      this.isLoading = true;
+      const fileHTML = new File([this.moduloHTML], 'fileHTML.txt');
+      const fileJSON = new File([this.moduloJSON], 'fileJSON.txt');
+
       const formData = new FormData();
-      formData.append('HTMLfile', this.textFileHTML);
-      formData.append('JSONfile', this.textFileJSON);
+      formData.append('HTMLfile', fileHTML);
+      formData.append('JSONfile', fileJSON);
       formData.append('nombre', this.nombre);
       this.moduloService.createModulo(formData).subscribe(
         result => {
           if (result['success']) {
-          this.openSnackBar('Módulo agregado correctamente');
+            this.openSnackBar('Módulo agregado correctamente');
           }
           this.closeDialog();
         }, error => {
+          this.isLoading = false;
           this.openSnackBar('!Ocurrio un error!');
         }
       );
-    }else {
+    } else {
       this.openSnackBar('¡Información incompleta!');
     }
 

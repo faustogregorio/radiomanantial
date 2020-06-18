@@ -41,7 +41,6 @@ export class AppComponent implements OnDestroy {
   openSidenav(nav: MatSidenav) {
     this.authService.authentication().subscribe(
       result => {
-        console.log(result);
         if (result['success']) {
           nav.toggle();
         } else {
@@ -58,30 +57,19 @@ export class AppComponent implements OnDestroy {
     nav.toggle();
     const dialogRef = this.dialog.open(MainImageComponent, {
       height: this.mobileQuery.matches ? '100vh' : '90vh',
+      maxWidth: this.mobileQuery.matches ? '100vh' : '80vh',
       width: this.mobileQuery.matches ? '100vw' : '90vw',
       autoFocus: false,
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
     });
   }
-
- /*  openAnuncios(nav: MatSidenav) {
-    nav.toggle();
-    const dialogRef = this.dialog.open(AnunciosComponent, {
-      height: this.mobileQuery.matches ? '100vh' : '90vh',
-      width: this.mobileQuery.matches ? '100vw' : '90vw',
-      autoFocus: false,
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
-  } */
 
   openLogin(nav: MatSidenav) {
     nav.close();
     const dialogRef = this.dialog.open(LoginComponent, {
-      maxHeight: this.mobileQuery.matches ? '100vh' : '90vh',
+      height: '440px',
+      maxWidth: this.mobileQuery.matches ? '100vh' : '80vh',
       width: this.mobileQuery.matches ? '100vw' : '500px',
       autoFocus: false,
     });
@@ -94,17 +82,14 @@ export class AppComponent implements OnDestroy {
 
   logout(nav: MatSidenav) {
     nav.close();
-    this.authService.logout().subscribe(
-      result => {
-        this.cookieService.deleteAll();
-        localStorage.removeItem('token');
-      }
-    );
+    this.cookieService.deleteAll();
+    localStorage.removeItem('token');
   }
   addAnuncio() {
     this.snav.close();
     const dialogRef = this.dialog.open(AddAnuncioComponent, {
       height: this.mobileQuery.matches ? '100vh' : '90vh',
+      maxWidth: this.mobileQuery.matches ? '100vh' : '80vh',
       width: this.mobileQuery.matches ? '100vw' : '90vw',
       autoFocus: false,
     });
@@ -117,6 +102,7 @@ export class AppComponent implements OnDestroy {
     this.snav.close();
     const dialogRef = this.dialog.open(ViewAnunciosComponent, {
       height: this.mobileQuery.matches ? '100vh' : '90vh',
+      maxWidth: this.mobileQuery.matches ? '100vh' : '80vh',
       width: this.mobileQuery.matches ? '100vw' : '90vw',
       autoFocus: false,
     });
@@ -129,6 +115,7 @@ export class AppComponent implements OnDestroy {
     this.snav.close();
     const dialogRef = this.dialog.open(AddModuloComponent, {
       height: this.mobileQuery.matches ? '100vh' : '90vh',
+      maxWidth: this.mobileQuery.matches ? '100vh' : '80vh',
       width: this.mobileQuery.matches ? '100vw' : '90vw',
       autoFocus: false,
     });
@@ -141,6 +128,7 @@ export class AppComponent implements OnDestroy {
     this.snav.close();
     const dialogRef = this.dialog.open(ViewModulosComponent, {
       height: this.mobileQuery.matches ? '100vh' : '90vh',
+      maxWidth: this.mobileQuery.matches ? '100vh' : '80vh',
       width: this.mobileQuery.matches ? '100vw' : '90vw',
       autoFocus: false,
     });
@@ -148,7 +136,4 @@ export class AppComponent implements OnDestroy {
 
     });
   }
-  /*
-
-  shouldRun = [/(^|\.)plnkr\.co$/, /(^|\.)stackblitz\.io$/].some(h => h.test(window.location.host)); */
 }

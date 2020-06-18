@@ -19,7 +19,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.getSelectedMainImage();
     this.imagenPrincipalSubscription = this.mainImageService.imagenPrincipalChange.subscribe(
       nombre => {
-        console.log(nombre);
         if (nombre !== '') {
           this.imagenPrincipal = `${this.domain}/uploads/${nombre}`;
         }
@@ -30,11 +29,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   getSelectedMainImage() {
     this.mainImageService.getSelectedMainImage().subscribe(
       result => {
-        console.log(result);
-        if (result['data'].length !== 0) {
-          this.imagenPrincipal = `${this.domain}/uploads/${result['data'][0].nombre}`;
+        if (result['success']) {
+          this.imagenPrincipal = `${this.domain}/uploads/${result['data'].nombre}`;
         } else {
-        this.imagenPrincipal = 'assets/img/imagen_principal.jpeg';
+          this.imagenPrincipal = 'assets/img/imagen_principal.jpeg';
         }
       }, error => {
         this.imagenPrincipal = 'assets/img/imagen_principal.jpeg';

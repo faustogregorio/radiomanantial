@@ -49,6 +49,8 @@ export class EditAnuncioComponent implements OnInit {
 
   redesSocialesDatos: SocialNetwork[];
   dataResult = '';
+
+  isLoading = false;
   constructor(
     public dialogRef: MatDialogRef<EditAnuncioComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Edit,
@@ -71,7 +73,7 @@ export class EditAnuncioComponent implements OnInit {
         this.anunciosService.getAnuncioImagenPrincipal(this.data.id).subscribe(
           result => {
             if (result['success']) {
-              this.fileImageSrc = result['data'][0].foto;
+              this.fileImageSrc = result['data'].foto;
             }
           }, error => {
             this.openSnackBar(`Error al cargar ${this.data.edit}`);
@@ -82,7 +84,7 @@ export class EditAnuncioComponent implements OnInit {
         this.anunciosService.getAnuncioLogo(this.data.id).subscribe(
           result => {
             if (result['success']) {
-              this.fileImageSrc = result['data'][0].logo;
+              this.fileImageSrc = result['data'].logo;
             }
           }, error => {
             this.openSnackBar(`Error al cargar ${this.data.edit}`);
@@ -106,7 +108,6 @@ export class EditAnuncioComponent implements OnInit {
       case 'Redes Sociales':
         this.anunciosService.getSocialNetworks().subscribe(
           result => {
-            console.log(result);
             if (result['success']) {
               this.redesSocialesDatos = result['data'];
               this.getRedesSociales();
@@ -139,7 +140,6 @@ export class EditAnuncioComponent implements OnInit {
   }
 
   onFileChange(event) {
-
     let img = this.imageEl.nativeElement;
     this.fileImage = event.target.files[0];
     let reader = new FileReader();
@@ -187,7 +187,6 @@ export class EditAnuncioComponent implements OnInit {
   }
 
   getDataContenido(e) {
-    console.log(e);
     this.contenidoHTML = e.html;
     this.contenidoJSON = JSON.stringify(e.content.ops);
   }
@@ -195,14 +194,12 @@ export class EditAnuncioComponent implements OnInit {
   getQuillContenido(quill) {
     this.quillContenido = quill;
     this.setQuillContenido(quill);
-    console.log('quill: ', this.quillContenido);
   }
   setQuillContenido(quill) {
     this.anunciosService.getAnuncioContenido(this.data.id).subscribe(
       result => {
-        console.log(result);
-        if (result['success'] && result['contenidoJSON'] !== '') {
-          quill.setContents(JSON.parse(result['contenidoJSON'].replace(/(\r\n|\n|\r)/gm, "\\n")));
+        if (result['success'] && result['data']['contenido_json'] !== '') {
+          quill.setContents(JSON.parse(result['data']['contenido_json'].replace(/(\r\n|\n|\r)/gm, "\\n")));
         }
       }, error => {
         this.openSnackBar(`Error al cargar el ${this.data.edit}`);
@@ -211,7 +208,6 @@ export class EditAnuncioComponent implements OnInit {
   }
 
   getDataNombre(e) {
-    console.log(e);
     this.nombreHTML = e.html;
     this.nombreJSON = JSON.stringify(e.content.ops);
   }
@@ -219,14 +215,12 @@ export class EditAnuncioComponent implements OnInit {
   getQuillNombre(quill) {
     this.quillNombre = quill;
     this.setQuillNombre(quill);
-    console.log('quill: ', this.quillNombre);
   }
   setQuillNombre(quill) {
     this.anunciosService.getAnuncioNombre(this.data.id).subscribe(
       result => {
-        console.log(result);
-        if (result['success'] && result['nombreJSON'] !== '') {
-          quill.setContents(JSON.parse(result['nombreJSON'].replace(/(\r\n|\n|\r)/gm, "\\n")));
+        if (result['success'] && result['data']['nombre_json'] !== '') {
+          quill.setContents(JSON.parse(result['data']['nombre_json'].replace(/(\r\n|\n|\r)/gm, "\\n")));
         }
       }, error => {
         this.openSnackBar(`Error al cargar el ${this.data.edit}`);
@@ -258,7 +252,6 @@ export class EditAnuncioComponent implements OnInit {
   }
 
   handleRemoveSocialNetwork(index: number) {
-    console.log(index);
     this.socialNetworks.removeAt(index);
   }
 
@@ -266,6 +259,7 @@ export class EditAnuncioComponent implements OnInit {
     switch (this.data.edit) {
       case 'Imagen Principal':
         if (this.fileImage) {
+          this.isLoading = true;
           const formData = new FormData();
           formData.append('file', this.fileImage);
           this.anunciosService.updateAnuncioImagenPrincipal(this.data.id, this.fileImageSrc, formData).subscribe(
@@ -276,6 +270,7 @@ export class EditAnuncioComponent implements OnInit {
                 this.closeDialog();
               }
             }, error => {
+              this.isLoading = false;
               this.openSnackBar('¡Ocurrio un error!');
             }
           );
@@ -285,6 +280,7 @@ export class EditAnuncioComponent implements OnInit {
         break;
       case 'Logo':
         if (this.fileImageLogo) {
+          this.isLoading = true;
           const formData = new FormData();
           formData.append('file', this.fileImageLogo);
           this.anunciosService.updateAnuncioLogo(this.data.id, this.fileImageSrc, formData).subscribe(
@@ -295,6 +291,7 @@ export class EditAnuncioComponent implements OnInit {
                 this.closeDialog();
               }
             }, error => {
+              this.isLoading = false;
               this.openSnackBar('¡Ocurrio un error!');
             }
           );
@@ -304,6 +301,7 @@ export class EditAnuncioComponent implements OnInit {
         break;
       case 'Imagenes':
         if (this.fileImagenes) {
+          this.isLoading = true;
           const formData = new FormData();
           for (let index = 0; index < this.fileImagenes.length; index++) {
             formData.append('file' + index, this.fileImagenes[index]);
@@ -315,6 +313,7 @@ export class EditAnuncioComponent implements OnInit {
                 this.closeDialog();
               }
             }, error => {
+              this.isLoading = false;
               this.openSnackBar('¡Ocurrio un error!');
             }
           );
@@ -323,6 +322,7 @@ export class EditAnuncioComponent implements OnInit {
         }
         break;
       case 'Nombre':
+        this.isLoading = true;
         this.anunciosService.updateAnuncioNombre(this.data.id, this.nombreHTML, this.nombreJSON).subscribe(
           result => {
             if (result['success']) {
@@ -330,11 +330,13 @@ export class EditAnuncioComponent implements OnInit {
               this.closeDialog();
             }
           }, error => {
+            this.isLoading = false;
             this.openSnackBar('¡Ocurrio un error!');
           }
         );
         break;
       case 'Contenido':
+        this.isLoading = true;
         this.anunciosService.updateAnuncioContenido(this.data.id, this.contenidoHTML, this.contenidoJSON).subscribe(
           result => {
             if (result['success']) {
@@ -342,6 +344,7 @@ export class EditAnuncioComponent implements OnInit {
               this.closeDialog();
             }
           }, error => {
+            this.isLoading = false;
             this.openSnackBar('¡Ocurrio un error!');
           }
         );
@@ -349,6 +352,7 @@ export class EditAnuncioComponent implements OnInit {
       case 'Redes Sociales':
         const redes = this.formAnuncio.get('redesSociales').value;
         if (redes.length > 0) {
+          this.isLoading = true;
           this.anunciosService.updateAnuncioRedesSociales(this.data.id, redes).subscribe(
             result => {
               if (result['success']) {
@@ -356,6 +360,7 @@ export class EditAnuncioComponent implements OnInit {
                 this.closeDialog();
               }
             }, error => {
+              this.isLoading = false;
               this.openSnackBar('¡Ocurrio un error!');
             }
           );

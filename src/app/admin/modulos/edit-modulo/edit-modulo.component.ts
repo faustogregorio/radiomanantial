@@ -18,19 +18,14 @@ export class EditModuloComponent implements OnInit, OnDestroy {
   moduloJSON = '';
 
   nombreControl: FormControl;
-  @ViewChild('fileHTML', { static: true }) fileHTML: ElementRef;
-  @ViewChild('fileJSON', { static: true }) fileJSON: ElementRef;
 
-  textFileHTML;
-  textFileJSON;
-
-  filenameHTML;
-  filenameJSON;
   moduloData;
   nombreEdited = '';
 
   timer;
   moduloTextJSON;
+
+  isLoading = false;
   constructor(
     public dialogRef: MatDialogRef<EditModuloComponent>,
     @Inject(MAT_DIALOG_DATA) public id,
@@ -43,7 +38,6 @@ export class EditModuloComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    console.log(this.id);
     this.moduloService.getModulo(this.id).subscribe(
       result => {
         if (result['success']) {
@@ -71,21 +65,7 @@ export class EditModuloComponent implements OnInit, OnDestroy {
     }
   }
 
-  onFileHTMLChange(event) {
-    this.textFileHTML = event.target.files[0];
-    this.filenameHTML = event.target.files[0].name;
-  }
-  addFileHTML() {
-    this.fileHTML.nativeElement.click();
-  }
-  onFileJSONChange(event) {
-    this.textFileJSON = event.target.files[0];
-    this.filenameJSON = event.target.files[0].name;
 
-  }
-  addFileJSON() {
-    this.fileJSON.nativeElement.click();
-  }
   getDataModulo(quill) {
     this.moduloHTML = quill.html;
     this.moduloJSON = JSON.stringify(quill.content.ops);
@@ -102,31 +82,14 @@ export class EditModuloComponent implements OnInit, OnDestroy {
 
   }
 
-  generateFiles() {
-    console.log(this.nombreControl);
-    if (this.nombreControl.valid) {
-      const fileHTML = new Blob([this.moduloHTML], { type: 'text/plain' });
-      const fileJSON = new Blob([this.moduloJSON], { type: 'text/plain' });
-
-      let aHTML = document.getElementById('moduloHTML');
-      aHTML['download'] = this.nombreControl.value + '_HTML.txt';
-      aHTML['href'] = window.URL.createObjectURL(fileHTML);
-      aHTML.click();
-
-      let aJSON = document.getElementById('moduloJSON');
-      aJSON['download'] = this.nombreControl.value + '_OBJECT.txt';
-      aJSON['href'] = window.URL.createObjectURL(fileJSON);
-      aJSON.click();
-    } else {
-      this.openSnackBar('Agrege un nombre al Módulo');
-    }
-
-  }
   saveModulo() {
-    if (this.textFileHTML && this.textFileJSON && this.nombreControl.valid) {
+    if (this.nombreControl.valid) {
+      this.isLoading = true;
+      const fileHTML = new File([this.moduloHTML], 'fileHTML.txt');
+      const fileJSON = new File([this.moduloJSON], 'fileJSON.txt');
       const formData = new FormData();
-      formData.append('HTMLfile', this.textFileHTML);
-      formData.append('JSONfile', this.textFileJSON);
+      formData.append('HTMLfile', fileHTML);
+      formData.append('JSONfile', fileJSON);
       formData.append('nombre', this.nombre);
       formData.append('fileOldHTML', this.moduloData.nombreHTML);
       formData.append('fileOldJSON', this.moduloData.nombreJSON);
@@ -138,6 +101,7 @@ export class EditModuloComponent implements OnInit, OnDestroy {
           }
           this.closeDialog();
         }, error => {
+          this.isLoading = false;
           this.openSnackBar('!Ocurrio un error!');
         }
       );

@@ -30,11 +30,9 @@ export class ViewModuloComponent implements OnInit {
       }
     );
     this.id = this.route.snapshot.paramMap.get('id');
-    console.log(this.id);
     if (!isNaN(this.id)) {
       this.moduloService.getModulo(this.id).subscribe(
         result => {
-          console.log(result);
           if (result['success'] && result['data']) {
             const htmlTextURL = `${this.mainDomain}/uploads/${result['data'].nombreHTML}`;
             this.loadHtmlData(htmlTextURL);
@@ -58,7 +56,6 @@ export class ViewModuloComponent implements OnInit {
     if (response.ok) { // if HTTP-status is 200-299
       // get the response body (the method explained below)
       this.moduloHTML = await response.text();
-      console.log(this.moduloHTML);
     } else {
       // alert("HTTP-Error: " + response.status);
     }

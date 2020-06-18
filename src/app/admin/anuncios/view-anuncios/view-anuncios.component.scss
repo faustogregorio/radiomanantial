@@ -1,4 +1,26 @@
+table {
+  max-width: 100%;
+  overflow: auto;
+}
 .mat-header-cell, .mat-cell {
   padding: 10px;
   text-align: center;
+}
+@media screen and (max-width: 799px) {
+  .mat-header-cell, .mat-cell {
+    padding: 5px;
+    text-align: center;
+  }
+  img {
+    height: 70px;
+  }
+}
+@media screen and (max-width: 599px) {
+  .mat-header-cell, .mat-cell {
+    padding: 5px;
+    text-align: center;
+  }
+  img {
+    height: 50px;
+  }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, HostListener } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { AnunciosService } from 'src/app/admin/anuncios/anuncios.service';
 import { MAIN_DOMAIN } from '../../../shared/domain';
@@ -14,11 +14,11 @@ export interface Slide {
   animations: [
     trigger('insertRemoveTrigger', [
       transition(':enter', [
-        style({ marginLeft: '-1000px', opacity: 1 }),
+        style({ marginLeft: '{{width}}', opacity: 1 }),
         animate('{{duration}}', style({ marginLeft: '*', opacity: 1 })),
       ]),
       transition(':leave', [
-        animate('{{duration}}', style({ marginLeft: '-1000px', opacity: 1 }))
+        animate('{{duration}}', style({ marginLeft: '{{width}}', opacity: 1 }))
       ])
     ]),
   ]
@@ -35,6 +35,8 @@ export class AnuncioSliderComponent implements OnInit {
   slideUpInterval;
   carouselDirection = 'right';
 
+  innerWidth = window.innerWidth > 600 ? '-80vw' : '-' + window.innerWidth + 'px';
+  width = window.innerWidth;
   constructor(
     private formBuilder: FormBuilder,
     private anunciosService: AnunciosService
@@ -42,6 +44,11 @@ export class AnuncioSliderComponent implements OnInit {
     this.carouselForm = this.formBuilder.group({
       carousel: this.formBuilder.array([])
     });
+  }
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.innerWidth = window.innerWidth > 600 ? '-80vw' : '-' + window.innerWidth + 'px';
+    this.width = window.innerWidth;
   }
 
   ngOnInit(): void {
@@ -52,7 +59,6 @@ export class AnuncioSliderComponent implements OnInit {
           this.initCarousel();
         }
       }, error => {
-        console.log('ERROR: ', error);
       }
     );
 
@@ -116,7 +122,6 @@ export class AnuncioSliderComponent implements OnInit {
     } else {
       this.slideDown++;
     }
-    console.log(this.carousel.length);
   }
 
   initSlide(data: any) {
@@ -134,7 +139,6 @@ export class AnuncioSliderComponent implements OnInit {
     }
     this.carousel.insert(this.slideUp, this.initSlide(this.carouselData[this.slideDown]));
     this.carousel.removeAt(0);
-    console.log(this.carousel.length);
 
   }
 

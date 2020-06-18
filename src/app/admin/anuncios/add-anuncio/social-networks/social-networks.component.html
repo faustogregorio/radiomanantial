@@ -6,7 +6,7 @@
 >
   <mat-form-field appearance="outline" floatLabel="always" fxFlex="30%">
     <mat-label>Red Social</mat-label>
-    <mat-select formControlName="id" name="id" (selectionChange)="onChange()">
+    <mat-select formControlName="id" name="id">
       <mat-option
         *ngFor="let redSocial of redesSocialesDatos"
         [value]="redSocial.id"

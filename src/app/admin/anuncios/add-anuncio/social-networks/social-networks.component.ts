@@ -17,18 +17,10 @@ export class SocialNetworksComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this.redesSocialesDatos);
   }
 
   emitRedSocialIndex() {
     this.onRemoveRedSocial.emit(this.index);
   }
 
-  onChange() {
-    /* this.redesSocialesForm.patchValue({
-      id: this.redesSocialesForm.value.id,
-      url: this.redesSocialesForm.value.url,
-    }); */
-    console.log(this.redeSocialeForm);
-  }
 }

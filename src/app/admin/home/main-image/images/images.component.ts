@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { BehaviorSubject, Subscription, Observable } from 'rxjs';
 import { MainImageService } from '../main-image.service';
@@ -17,11 +17,15 @@ export interface Image {
   styleUrls: ['./images.component.scss']
 })
 export class ImagesComponent implements OnInit, OnDestroy {
+  @Output() onDelete = new EventEmitter<boolean>();
   displayedColumns: string[] = ['index', 'path', 'more'];
   images = new BehaviorSubject<Image[]>([]);
   dataSource: Observable<Image[]>;
   domain = MAIN_DOMAIN;
   imageUploadedSubscription: Subscription;
+
+  id;
+  nombre;
   constructor(
     private mainImageService: MainImageService,
     private _snackBar: MatSnackBar
@@ -33,7 +37,6 @@ export class ImagesComponent implements OnInit, OnDestroy {
 
     this.imageUploadedSubscription = this.mainImageService.imageUploaded.subscribe(
       (image: Image) => {
-        console.log(image);
         if (image.id !== 0) {
           this.images.next([image, ...this.images.value]);
         }
@@ -44,7 +47,6 @@ export class ImagesComponent implements OnInit, OnDestroy {
   getImagenes() {
     this.mainImageService.getImagenesPrincipales().subscribe(
       result => {
-        console.log(result);
         if (result['success']) {
           this.images.next(result['data']);
         }
@@ -53,25 +55,35 @@ export class ImagesComponent implements OnInit, OnDestroy {
   }
 
   deleteImage(id, nombre) {
-    this.mainImageService.deleteImagenPrincipal(id, nombre).subscribe(
-      result => {
-        console.log(result);
-        if (result['success']) {
-          this.images.next(this.images.value.filter(image => { if (image.id !== id) return image }));
-          this.openSnackBar('¡Eliminado correctamente!');
-        }
-      }, error => {
-        this.openSnackBar('¡Imagen no pudo ser borrado!');
-      }
-    );
+    this.id = id;
+    this.nombre = nombre;
+
+    this.openSnackBar('¿Quiere eliminar la imagen?', 'ELIMINAR');
 
   }
 
-  openSnackBar(message: string) {
-    this._snackBar.open(message, 'Aceptar', {
-      duration: 4000,
+  openSnackBar(message: string, action = 'Aceptar') {
+    const snackBarRef = this._snackBar.open(message, action, {
+      duration: 3000,
       horizontalPosition: 'center',
       verticalPosition: 'bottom',
+    });
+
+    snackBarRef.onAction().subscribe(() => {
+      if (action === 'ELIMINAR') {
+        this.mainImageService.deleteImagenPrincipal(this.id, this.nombre).subscribe(
+          result => {
+            if (result['success']) {
+              this.images.next(this.images.value.filter(image => { if (image.id !== this.id) return image }));
+              this.onDelete.emit(true);
+              this.openSnackBar('¡Eliminado correctamente!');
+            }
+          }, error => {
+            this.openSnackBar('¡Imagen no pudo ser borrado!');
+          }
+        );
+      }
+
     });
   }
 
@@ -83,7 +95,6 @@ export class ImagesComponent implements OnInit, OnDestroy {
     if (event.checked) {
       this.mainImageService.updateSelectedMainImage(id, nombre).subscribe(
         result => {
-          console.log(result);
           if (result['success']) {
             this.mainImageService.imagenPrincipalChange.next(nombre);
             this.images.next(this.images.value.filter(image => {

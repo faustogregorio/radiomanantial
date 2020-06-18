@@ -26,7 +26,11 @@ export class ViewAnunciosComponent implements OnInit {
   anuncios = new BehaviorSubject<Anuncio[]>([]);
   dataSource: Observable<Anuncio[]>;
   domain = MAIN_DOMAIN;
-  //imageUploadedSubscription: Subscription;
+
+  id;
+  foto;
+  logo;
+
   constructor(
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher,
@@ -48,7 +52,6 @@ export class ViewAnunciosComponent implements OnInit {
   getAnuncios() {
     this.anunciosService.getAnuncios().subscribe(
       result => {
-        console.log(result);
         if (result['success']) {
           this.anuncios.next(result['data']);
         }
@@ -59,29 +62,37 @@ export class ViewAnunciosComponent implements OnInit {
   }
 
   deleteAnuncio(id, foto, logo) {
-    this.anunciosService.deleteAnuncio(id, foto, logo).subscribe(
-      result => {
-        console.log(result);
-        if (result['success']) {
-          this.anuncios.next(this.anuncios.value.filter(anuncio => { if (anuncio.id !== id) return anuncio }));
-          this.anunciosService.anuncioUploaded(id, foto, 'delete');
-          this.openSnackBar('¡Eliminado correctamente!');
-        }
-      }, error => {
-        this.openSnackBar('¡Ocurrio un error!');
-      }
-    );
-
+    this.id = id;
+    this.logo = logo;
+    this.foto = foto;
+    this.openSnackBar('¿Quiere eliminar al anunciante?', 'ELIMINAR');
   }
 
   closeDialog() {
     this.dialogRef.close();
   }
-  openSnackBar(message: string) {
-    this._snackBar.open(message, 'Aceptar', {
-      duration: 4000,
+  openSnackBar(message: string, action = 'Aceptar') {
+    const snackBarRef = this._snackBar.open(message, action, {
+      duration: 3000,
       horizontalPosition: 'center',
       verticalPosition: 'bottom',
+    });
+
+    snackBarRef.onAction().subscribe(() => {
+      if (action === 'ELIMINAR') {
+        this.anunciosService.deleteAnuncio(this.id, this.foto, this.logo).subscribe(
+          result => {
+            if (result['success']) {
+              this.anuncios.next(this.anuncios.value.filter(anuncio => { if (anuncio.id !== this.id) return anuncio }));
+              this.anunciosService.anuncioUploaded(this.id, this.foto, 'delete');
+              this.openSnackBar('¡Eliminado correctamente!');
+            }
+          }, error => {
+            this.openSnackBar('¡Ocurrio un error!');
+          }
+        );
+      }
+
     });
   }
 
@@ -89,12 +100,12 @@ export class ViewAnunciosComponent implements OnInit {
     const dialogRef = this.dialog.open(EditAnuncioComponent, {
       data: { id: id, edit: edit },
       height: this.mobileQuery.matches ? '100vh' : '90vh',
+      maxWidth: this.mobileQuery.matches ? '100vh' : '80vh',
       width: this.mobileQuery.matches ? '100vw' : '90vw',
       autoFocus: false,
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result && result['data'] !== '') {
-        console.log(result);
         switch (result['edit']) {
           case 'Imagen Principal':
             this.anuncios.next(this.anuncios.value.filter(

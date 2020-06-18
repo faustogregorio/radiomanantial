@@ -36,7 +36,6 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid && this.loginForm.dirty) {
       this.auth.login(this.loginForm.value.user, this.loginForm.value.password).subscribe(
         result => {
-          console.log(result);
           if (result['success'] && result['token']) {
             this.cookieService.set('token', result['token'] );
             localStorage.setItem('token', result['token']);
@@ -45,7 +44,6 @@ export class LoginComponent implements OnInit {
           }
         },
         error => {
-          console.log(error);
           this.error.exist = true;
           this.error.message = error['error'].message;
         }

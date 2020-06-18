@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DOMAIN } from '../../../shared/domain';
-import { HttpClient, HttpEventType } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 export interface Image {
   id: number;
@@ -20,28 +19,11 @@ export class MainImageService {
   ) { }
 
   getImagenesPrincipales() {
-    return this.http.get(`${this.url}/imagenes-principales`);
+    return this.http.get(`${this.url}/imagen-principal/imagenesPrincipales.php`);
   }
 
   createImagenPrincipal(formData: FormData) {
-    return this.http.post(`${this.url}/imagenes-principales`, formData, {
-      reportProgress: true,
-      observe: 'events'
-    }).pipe(map((event) => {
-
-      switch (event.type) {
-
-        case HttpEventType.UploadProgress:
-          const progress = Math.round(100 * event.loaded / event.total);
-          return { status: 'progress', message: progress };
-
-        case HttpEventType.Response:
-          return event.body;
-        default:
-          return `Unhandled event: ${event.type}`;
-      }
-    })
-    );
+    return this.http.post(`${this.url}/imagen-principal/create.php`, formData);
   }
 
   uploadImageCompleted(image: Image) {
@@ -49,7 +31,7 @@ export class MainImageService {
   }
 
   deleteImagenPrincipal(id, nombre) {
-    return this.http.delete(`${this.url}/imagenes-principales/${id}__${nombre}`);
+    return this.http.delete(`${this.url}/imagen-principal/delete.php?id=${id}&nombre=${nombre}`);
   }
 
   updateImagenPrincipal(name) {
@@ -57,10 +39,10 @@ export class MainImageService {
   }
 
   getSelectedMainImage() {
-    return this.http.get(`${this.url}/imagenes-principales/selected`);
+    return this.http.get(`${this.url}/imagen-principal/selectedImagenPrincipal.php`);
   }
 
   updateSelectedMainImage(id: number, nombre: string) {
-    return this.http.put(`${this.url}/imagenes-principales/${id}`, { nombre: nombre });
+    return this.http.put(`${this.url}/imagen-principal/updateSelectedImagen.php?id=${id}`, { nombre: nombre });
   }
 }

@@ -21,7 +21,7 @@
           style="color: white;"
         >
           <img src="assets/img/facebook-logo.svg" alt="" height="26px" />
-          <span>Radio Manantial</span>
+          <span *ngIf="!mobileQuery.matches">Radio Manantial</span>
         </a>
         <a
           style="height: 100%;"
@@ -32,7 +32,7 @@
           style="color: white;"
         >
           <img src="assets/img/whatsapp.png" alt="" height="30px" />
-          <span>351 104 4183</span>
+          <span *ngIf="!mobileQuery.matches">351 104 4183</span>
         </a>
         <div style="height: 100%;" fxLayoutAlign="start center">
           <mat-icon>phone</mat-icon>
@@ -59,7 +59,7 @@
       mode="over'"
       fixedInViewport="true"
       [fixedTopGap]="mobileQuery.matches ? 56 : 64"
-      style="width: 300px;"
+      style="width: 250px;"
     >
       <mat-nav-list>
         <a mat-list-item (click)="openHomeImage(snav)"
@@ -98,21 +98,17 @@
     </mat-sidenav>
 
     <mat-sidenav-content>
-      <div style="width: 100%;overflow-x: hidden;" fxLayoutAlign="center start">
-        <div class="anuncio">
-          <app-carousel
-            style="width: 100%;"
-            fxLayout="column"
-            fxLayoutGap="20px"
-          ></app-carousel>
+      <div style="width: 100%;" fxLayout.xs="row wrap" fxLayoutAlign="start">
+        <div class="anuncio" *ngIf="!mobileQuery.matches">
+          <app-carousel></app-carousel>
         </div>
-        <div
-          class="contenido"
-          style="flex-grow: 1; margin: 0px 350px 0px 350px;"
-        >
+        <div class="contenido" fxFlexOrder.xs="1">
           <router-outlet></router-outlet>
         </div>
-        <div class="chat">
+        <div fxFlex="100%" *ngIf="mobileQuery.matches" fxFlexOrder.xs="2">
+          <app-carousel-horinzontal></app-carousel-horinzontal>
+        </div>
+        <div class="chat" fxFlexOrder.xs="3">
           <iframe
             id="chat"
             src="https://www6.cbox.ws/box/?boxid=838291&boxtag=i07IvJ"

@@ -7,8 +7,17 @@ button {
 }
 
 #carousel-container:hover {
-
   button {
     display: block;
+  }
+}
+#button-down {
+  position: absolute;
+  z-index: 2;
+  bottom: calc(64px + 15px);
+}
+@media screen and (max-width: 959px) and (min-width: 600px) {
+  #button-down {
+    bottom: calc(125px + 15px);
   }
 }

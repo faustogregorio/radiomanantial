@@ -55,7 +55,7 @@ export class MainImageComponent implements OnInit {
     this.mainImageService.createImagenPrincipal(formData).subscribe(
       result => {
         if (result['success']) {
-          this.uploadedImageId = result['data'].insertId;
+          this.uploadedImageId = result['insert_id'];
           this.mainImageService.uploadImageCompleted({ id: this.uploadedImageId, nombre: result['nombre'], selected: 0 });
           this.openSnackBar('¡Agregado correctamente!');
         }
@@ -71,9 +71,17 @@ export class MainImageComponent implements OnInit {
       }
     );
   }
+
+  onDeleteImage(event) {
+    if (event) {
+      this.imageExist = false;
+      this.fileImage = undefined;
+      this.isUploading = false;
+    }
+  }
   openSnackBar(message: string) {
     this._snackBar.open(message, 'Aceptar', {
-      duration: 4000,
+      duration: 3000,
       horizontalPosition: 'center',
       verticalPosition: 'bottom',
     });

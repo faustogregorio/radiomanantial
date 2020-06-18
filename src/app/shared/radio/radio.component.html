@@ -1,17 +1,14 @@
-
 <div fxLayoutAlign="center center" fxLayoutGap="10px">
   <mat-icon
     style="font-size: 40px; cursor: pointer;"
     inline="true"
     [matMenuTriggerFor]="menuModulo"
+    (click)="getModulos()"
     >menu</mat-icon
   >
   <button mat-fab color="primary" (click)="playRadio()">
     <mat-icon>{{ paused ? "play_arrow" : "pause" }}</mat-icon>
   </button>
-  <!-- <button mat-icon-button color="warn" (click)="reloadRadio()">
-    <mat-icon [style.color]="live ? 'red' : 'grey'">lens</mat-icon>
-  </button> -->
 
   <div
     style="height: 100%;"
@@ -38,11 +35,8 @@
 </div>
 
 <mat-menu #menuModulo="matMenu">
-  <a
-    mat-menu-item
-    routerLink="/"
-  >
-  <mat-icon>home</mat-icon>
+  <a mat-menu-item routerLink="/">
+    <mat-icon>home</mat-icon>
     <span>INICIO</span>
   </a>
   <button
@@ -50,7 +44,7 @@
     mat-menu-item
     (click)="navigationModule(modulo.id, modulo.htmlNombre)"
   >
-  <mat-icon>chevron_right</mat-icon>
-    <span style="text-transform: uppercase;">{{modulo.nombre}}</span>
+    <mat-icon>label</mat-icon>
+    <span style="text-transform: uppercase;">{{ modulo.nombre }}</span>
   </button>
 </mat-menu>

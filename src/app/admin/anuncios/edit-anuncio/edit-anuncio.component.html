@@ -9,7 +9,7 @@
     >close</mat-icon
   >
   <div fxFlex="100%" fxLayoutAlign="center start">
-    <h2>Modificar {{ data.edit }} del Anunciante</h2>
+    <h2>Modificar {{ data.edit }}</h2>
   </div>
   <div [formGroup]="formAnuncio" fxLayout="row wrap" fxFlex="100%">
     <div
@@ -17,7 +17,12 @@
       fxLayoutAlign="center start"
       [fxShow]="data.edit === 'Imagen Principal' ? 'true' : 'false'"
     >
-      <div fxFlex="50%" fxLayoutAlign="start center" fxLayoutGap="10px">
+      <div
+        fxFlex="50%"
+        fxFlex.lt-md="100%"
+        fxLayoutAlign="start center"
+        fxLayoutGap="10px"
+      >
         <input
           style="display: none;"
           type="file"
@@ -46,10 +51,16 @@
 
     <div
       fxFlex="100%"
+      fxFlex.lt-md="100%"
       fxLayoutAlign="center start"
       [fxShow]="data.edit === 'Logo' ? 'true' : 'false'"
     >
-      <div fxFlex="50%" fxLayoutAlign="start center" fxLayoutGap="10px">
+      <div
+        fxFlex="50%"
+        fxFlex.lt-md="100%"
+        fxLayoutAlign="start center"
+        fxLayoutGap="10px"
+      >
         <input
           style="display: none;"
           type="file"
@@ -81,7 +92,12 @@
       fxLayoutAlign="center start"
       *ngIf="data.edit === 'Nombre'"
     >
-      <div fxFlex="50%" fxLayout="row wrap" fxLayoutAlign="start center">
+      <div
+        fxFlex="50%"
+        fxFlex.lt-md="100%"
+        fxLayout="row wrap"
+        fxLayoutAlign="start center"
+      >
         <label for="" style="margin-top: 20px;">Nombre: </label>
         <quill-editor
           fxFlex="100%"
@@ -98,7 +114,11 @@
       fxLayoutAlign="center start"
       [fxShow]="data.edit === 'Imagenes' ? 'true' : 'false'"
     >
-      <div fxFlex="50%" fxLayoutAlign="space-between center">
+      <div
+        fxFlex="50%"
+        fxFlex.lt-md="100%"
+        fxLayoutAlign="space-between center"
+      >
         <div fxFlex="100%" fxLayout="row wrap" fxLayoutAlign="start center">
           <input
             style="display: none;"
@@ -132,7 +152,12 @@
       fxLayoutAlign="center start"
       *ngIf="data.edit === 'Contenido'"
     >
-      <div fxFlex="50%" fxLayout="row wrap" fxLayoutAlign="start center">
+      <div
+        fxFlex="50%"
+        fxFlex.lt-md="100%"
+        fxLayout="row wrap"
+        fxLayoutAlign="start center"
+      >
         <label for="" style="margin-top: 20px;">Contenido: </label>
         <quill-editor
           fxFlex="100%"
@@ -150,7 +175,12 @@
       style="margin-top: 20px;"
       *ngIf="data.edit === 'Redes Sociales'"
     >
-      <div fxFlex="50%" fxLayout="row wrap" fxLayoutAlign="center">
+      <div
+        fxFlex="50%"
+        fxFlex.lt-md="100%"
+        fxLayout="row wrap"
+        fxLayoutAlign="center"
+      >
         <button
           mat-stroked-button
           color="primary"
@@ -178,6 +208,7 @@
     </div>
     <div style="margin-top: 40px;" fxFlex="100%" fxLayoutAlign="center start">
       <button
+        *ngIf="!isLoading"
         style="padding: 10px;"
         mat-flat-button
         color="primary"
@@ -185,8 +216,20 @@
       >
         Modificar {{ data.edit }}
       </button>
+      <div
+        *ngIf="isLoading"
+        style="width: 100%;"
+        fxLayout="column"
+        fxLayoutAlign="start center"
+        fxLayoutGap="10px"
+      >
+        <mat-progress-spinner
+          color="primary"
+          diameter="40"
+          mode="indeterminate"
+        ></mat-progress-spinner>
+        <span>Subiendo...</span>
+      </div>
     </div>
   </div>
-  <!-- <quill-editor style="width: 100%;" placeholder="Ingrese texto aquí"  theme="snow" (onContentChanged)="getText($event)" (onEditorCreated)="getQuill($event)" ></quill-editor>
-  <quill-view-html [content]="htmlstring" theme="snow"></quill-view-html> -->
 </div>

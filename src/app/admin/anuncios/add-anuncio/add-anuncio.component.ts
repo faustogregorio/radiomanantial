@@ -42,7 +42,7 @@ export class AddAnuncioComponent implements OnInit {
 
   redesSocialesDatos: SocialNetwork[];
 
-  //formData: FormData;
+  isLoading = false;
   constructor(
     public dialogRef: MatDialogRef<AddAnuncioComponent>,
     private formBuilder: FormBuilder,
@@ -61,7 +61,6 @@ export class AddAnuncioComponent implements OnInit {
   ngOnInit(): void {
     this.anunciosService.getSocialNetworks().subscribe(
       result => {
-        console.log(result);
         if (result['success']) {
           this.redesSocialesDatos = result['data'];
         }
@@ -130,18 +129,15 @@ export class AddAnuncioComponent implements OnInit {
   }
 
   getDataContenido(e) {
-    console.log(e);
     this.contenidoHTML = e.html;
     this.contenidoJSON = JSON.stringify(e.content.ops);
   }
 
   getQuillContenido(quill) {
     this.quillContenido = quill;
-    console.log('quill: ', this.quillContenido);
   }
 
   getDataNombre(e) {
-    console.log(e);
     this.nombreHTML = e.html;
     const datojson = JSON.stringify(e.content.ops);
     this.nombreJSON = datojson;
@@ -149,7 +145,6 @@ export class AddAnuncioComponent implements OnInit {
 
   getQuillNombre(quill) {
     this.quillNombre = quill;
-    console.log('quill: ', this.quillNombre);
   }
 
   get socialNetworks() {
@@ -168,7 +163,6 @@ export class AddAnuncioComponent implements OnInit {
   }
 
   handleRemoveSocialNetwork(index: number) {
-    console.log(index);
     this.socialNetworks.removeAt(index);
   }
 
@@ -184,6 +178,7 @@ export class AddAnuncioComponent implements OnInit {
       this.fileImage &&
       this.fileImageLogo &&
       this.fileImagenes) {
+      this.isLoading = true;
       const redes = this.formAnuncio.get('redesSociales').value;
       formData.append('principal', this.fileImage);
       formData.append('logo', this.fileImageLogo);
@@ -208,6 +203,7 @@ export class AddAnuncioComponent implements OnInit {
           }
           this.closeDialog();
         }, error => {
+          this.isLoading = false;
           this.openSnackBar('¡Ocurrio un error!');
           this.closeDialog();
 
@@ -221,7 +217,7 @@ export class AddAnuncioComponent implements OnInit {
 
   openSnackBar(message: string) {
     this._snackBar.open(message, 'Aceptar', {
-      duration: 4000,
+      duration: 3000,
       horizontalPosition: 'center',
       verticalPosition: 'bottom',
     });

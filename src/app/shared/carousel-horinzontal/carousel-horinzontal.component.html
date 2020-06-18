@@ -1,11 +1,9 @@
 <div
   [formGroup]="carouselForm"
   id="carousel-container"
-  fxFlex.gt-md="1000px"
-  fxFlex.xs="100vw"
-  fxFlex.gt-xs="100%"
+  fxFlex="100%"
   fxLayoutAlign="start center"
-  style="position: relative; margin-top: 10px;"
+  style="position: relative;"
 >
   <button
     mat-mini-fab
@@ -38,21 +36,16 @@
   >
     <div
       *ngFor="let slide of carousel.controls"
-      class="slider"
-      [@insertRemoveTrigger]="{
-        value: 0,
-        params: {
-          duration: duration,
-          width: width > 1280 ? '-1000px' : innerWidth
-        }
-      }"
+      [@insertRemoveTrigger]="{ value: 0, params: { duration: duration } }"
       (mouseenter)="mouseEnterContainer()"
       (mouseleave)="mouseLeaveContainer()"
-      fxFlex.xs="100vw"
-      fxFlex.gt-xs="80vw"
-      fxFlex.gt-md="1000px"
+      fxFlex="100vw"
+      style="height: 210px; background-color: red;"
     >
-      <app-anuncio-slide [slideForm]="slide"></app-anuncio-slide>
+      <app-slide-horizontal
+        [slideForm]="slide"
+        (onClickSlide)="onSelectedAnuncio($event)"
+      ></app-slide-horizontal>
     </div>
   </div>
 </div>

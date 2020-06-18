@@ -1,29 +1,29 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef, HostListener } from '@angular/core';
-import { FormBuilder, FormArray, FormGroup } from '@angular/forms';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
-import { AnunciosService } from 'src/app/admin/anuncios/anuncios.service';
 import { MAIN_DOMAIN } from '../domain';
-import { MatDialog } from '@angular/material/dialog';
+import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
+import { AnunciosService } from 'src/app/admin/anuncios/anuncios.service';
 import { MediaMatcher } from '@angular/cdk/layout';
+import { MatDialog } from '@angular/material/dialog';
 import { ViewAnuncianteComponent } from '../view-anunciante/view-anunciante.component';
-import { map } from 'rxjs/operators';
+
 @Component({
-  selector: 'app-carousel',
-  templateUrl: './carousel.component.html',
-  styleUrls: ['./carousel.component.scss'],
+  selector: 'app-carousel-horinzontal',
+  templateUrl: './carousel-horinzontal.component.html',
+  styleUrls: ['./carousel-horinzontal.component.scss'],
   animations: [
     trigger('insertRemoveTrigger', [
       transition(':enter', [
-        style({ marginTop: '{{height}}', opacity: 1 }),
-        animate('{{duration}}', style({ marginTop: '*', opacity: 1 })),
+        style({ marginLeft: '-100vw', opacity: 1 }),
+        animate('{{duration}}', style({ marginLeft: '*', opacity: 1 })),
       ]),
       transition(':leave', [
-        animate('{{duration}}', style({ marginTop: '{{height}}', opacity: 1 }))
+        animate('{{duration}}', style({ marginLeft: '-100vw', opacity: 1 }))
       ])
     ]),
   ]
 })
-export class CarouselComponent implements OnInit, OnDestroy {
+export class CarouselHorinzontalComponent implements OnInit {
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
 
@@ -32,11 +32,11 @@ export class CarouselComponent implements OnInit, OnDestroy {
   carouselData = [];
   duration = '0ms';
   slideDown = 0;
-  slideUp = 19;
+  slideUp = 3;
   slideDownInterval;
   slideUpInterval;
-  carouselDirection = 'down';
-  height = '-200px';
+  carouselDirection = 'right';
+
   constructor(
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher,
@@ -52,20 +52,8 @@ export class CarouselComponent implements OnInit, OnDestroy {
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
   }
-  @HostListener('window:resize', ['$event'])
-  onResize(event) {
-    if (window.innerWidth > 1919) {
-      this.height = '-200px';
-    } else if (window.innerWidth > 1279) {
-      this.height = '-160px';
-    } else if (window.innerWidth > 959) {
-      this.height = '-135px';
-    } else if (window.innerWidth > 599) {
-      this.height = '-110px';
-    }
-  }
+
   ngOnInit(): void {
-    this.onResize(window.innerWidth);
     this.anunciosService.anunciosChange.subscribe(
       (result: { id: number, img: string, operation: string }) => {
         if (result.id !== 0) {
@@ -94,6 +82,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
         }
       }
     );
+
     this.anunciosService.getAnuncios().subscribe(
       result => {
         if (result['success']) {
@@ -107,11 +96,12 @@ export class CarouselComponent implements OnInit, OnDestroy {
       }, error => {
       }
     );
-    this.infiniteSlideDown();
+
+    this.infiniteSlideLeft();
   }
   initCarousel() {
     if (this.carouselData.length > 0) {
-      while (this.carousel.length < 20) {
+      while (this.carousel.length < 2) {
         for (const slide of this.carouselData) {
           this.carousel.insert(0, this.formBuilder.group({
             id: slide.id,
@@ -136,11 +126,11 @@ export class CarouselComponent implements OnInit, OnDestroy {
   }
 
   mouseLeave(direction) {
-    if (direction === 'up') {
-      this.infiniteSlideUp();
+    if (direction === 'left') {
+      this.infiniteSlideRight();
 
     } else {
-      this.infiniteSlideDown();
+      this.infiniteSlideLeft();
 
     }
   }
@@ -150,11 +140,11 @@ export class CarouselComponent implements OnInit, OnDestroy {
   }
 
   mouseLeaveContainer() {
-    if (this.carouselDirection === 'up') {
-      this.infiniteSlideUp();
+    if (this.carouselDirection === 'left') {
+      this.infiniteSlideRight();
 
     } else {
-      this.infiniteSlideDown();
+      this.infiniteSlideLeft();
 
     }
   }
@@ -177,7 +167,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     });
   }
 
-  removeBottomSlide() {
+  removeSlide() {
     this.duration = '1000ms';
     if (this.slideDown === 0) {
       this.slideDown = this.carouselData.length - 1;
@@ -189,16 +179,16 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   }
 
-  infiniteSlideDown() {
+  infiniteSlideLeft() {
     this.slideDownInterval = setInterval(() => {
       this.addSlide();
-    }, 3000);
+    }, 4000);
 
   }
-  infiniteSlideUp() {
+  infiniteSlideRight() {
     this.slideUpInterval = setInterval(() => {
-      this.removeBottomSlide();
-    }, 3000);
+      this.removeSlide();
+    }, 4000);
   }
 
   ngOnDestroy(): void {
@@ -216,8 +206,9 @@ export class CarouselComponent implements OnInit, OnDestroy {
     if (id === 0) return;
     const dialogRef = this.dialog.open(ViewAnuncianteComponent, {
       data: id,
-      height: 'calc(100vh - 60px)',
-      width: this.mobileQuery.matches ? '100vw' : '80vw',
+      height: '100vh',
+      maxWidth: '100vh',
+      width: '100vw',
       autoFocus: false,
     });
     dialogRef.afterClosed().subscribe(result => {

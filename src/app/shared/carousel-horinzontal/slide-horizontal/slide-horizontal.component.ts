@@ -1,13 +1,12 @@
-import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 @Component({
-  selector: 'app-slide',
-  templateUrl: './slide.component.html',
-  styleUrls: ['./slide.component.scss']
+  selector: 'app-slide-horizontal',
+  templateUrl: './slide-horizontal.component.html',
+  styleUrls: ['./slide-horizontal.component.scss']
 })
-export class SlideComponent implements OnInit {
-
+export class SlideHorizontalComponent implements OnInit {
   @Input() slideForm: FormGroup;
   @Output() onClickSlide = new EventEmitter<number>();
 
@@ -15,10 +14,10 @@ export class SlideComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
   emitSlideIndex(id: number) {
     this.onClickSlide.emit(id);
   }
+
   get id() {
     return this.slideForm.get('id').value;
   }

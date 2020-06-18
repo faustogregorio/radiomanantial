@@ -54,7 +54,6 @@ export class ViewModulosComponent implements OnInit {
   getModulos() {
     this.moduloService.getModulos().subscribe(
       result => {
-        console.log(result);
         if (result['success']) {
           this.modulos.next(result['data']);
         }
@@ -80,17 +79,19 @@ export class ViewModulosComponent implements OnInit {
     });
 
     snackBarRef.onAction().subscribe(() => {
-      this.moduloService.deleteModulo(this.id, this.htmlNombre, this.jsonNombre).subscribe(
-        result => {
-          console.log(result);
-          if (result['success']) {
-            this.modulos.next(this.modulos.value.filter(modulo => { if (modulo.id !== this.id) return modulo }));
-            this.openSnackBar('¡Módulo Eliminado!');
+      if (action === 'ELIMINAR') {
+        this.moduloService.deleteModulo(this.id, this.htmlNombre, this.jsonNombre).subscribe(
+          result => {
+            if (result['success']) {
+              this.modulos.next(this.modulos.value.filter(modulo => { if (modulo.id !== this.id) return modulo }));
+              this.openSnackBar('¡Módulo Eliminado!');
+            }
+          }, error => {
+            this.openSnackBar('¡Ocurrio un error!');
           }
-        }, error => {
-          this.openSnackBar('¡Ocurrio un error!');
-        }
-      );
+        );
+      }
+
     });
   }
 
@@ -98,11 +99,11 @@ export class ViewModulosComponent implements OnInit {
     const dialogRef = this.dialog.open(EditModuloComponent, {
       data: id,
       height: this.mobileQuery.matches ? '100vh' : '90vh',
+      maxWidth: this.mobileQuery.matches ? '100vh' : '80vh',
       width: this.mobileQuery.matches ? '100vw' : '90vw',
       autoFocus: false,
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
       if (result && result['nombre'] !== '') {
         this.modulos.next(this.modulos.value.filter(
           modulo => {

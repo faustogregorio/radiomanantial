@@ -1,14 +1,10 @@
 <div [formGroup]="carouselForm" style="width: 100%;">
-  <div id="carousel-container" fxFlex="100%" fxLayout="row wrap" fxLayoutAlign="center">
-<!--     <div
-      style="
-        position: absolute;
-        width: 100%;
-        height: 40px;
-        background-color: rgba(0, 0, 0, 0.2);
-        z-index: 1;
-      "
-    ></div> -->
+  <div
+    id="carousel-container"
+    fxFlex="100%"
+    fxLayout="row wrap"
+    fxLayoutAlign="center"
+  >
     <button
       mat-mini-fab
       color="primary"
@@ -17,11 +13,12 @@
       (mouseenter)="mouseEnter('up')"
       (mouseleave)="mouseLeave('up')"
       (click)="removeBottomSlide()"
-      style="position: absolute;z-index: 2;top: 15px;"
+      style="position: absolute; z-index: 2; top: 15px;"
     >
       <mat-icon>keyboard_arrow_up</mat-icon>
     </button>
     <button
+      id="button-down"
       mat-mini-fab
       color="primary"
       type="button"
@@ -29,14 +26,16 @@
       (mouseenter)="mouseEnter('down')"
       (mouseleave)="mouseLeave('down')"
       (click)="addSlide()"
-      style="position: absolute;z-index: 2;bottom: calc(64px + 15px);"
     >
       <mat-icon>keyboard_arrow_down</mat-icon>
     </button>
     <div style="width: 100%;" formArrayName="carousel">
       <div
         *ngFor="let slide of carousel.controls"
-        [@insertRemoveTrigger]="{value: 0, params:{duration: duration}}"
+        [@insertRemoveTrigger]="{
+          value: 0,
+          params: { duration: duration, height: height }
+        }"
         (mouseenter)="mouseEnterContainer()"
         (mouseleave)="mouseLeaveContainer()"
       >
