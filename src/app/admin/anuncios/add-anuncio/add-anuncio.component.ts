@@ -204,8 +204,7 @@ export class AddAnuncioComponent implements OnInit {
           this.closeDialog();
         }, error => {
           this.isLoading = false;
-          this.openSnackBar('¡Ocurrio un error!');
-          this.closeDialog();
+          this.openSnackBar('ERROR: Contenido/Nombre no permite imagenes');
 
         }
       );

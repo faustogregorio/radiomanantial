@@ -100,7 +100,7 @@ export class ViewAnunciosComponent implements OnInit {
     const dialogRef = this.dialog.open(EditAnuncioComponent, {
       data: { id: id, edit: edit },
       height: this.mobileQuery.matches ? '100vh' : '90vh',
-      maxWidth: this.mobileQuery.matches ? '100vh' : '80vh',
+      maxWidth: this.mobileQuery.matches ? '100vw' : '80vw',
       width: this.mobileQuery.matches ? '100vw' : '90vw',
       autoFocus: false,
     });

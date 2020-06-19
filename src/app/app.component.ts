@@ -57,8 +57,8 @@ export class AppComponent implements OnDestroy {
     nav.toggle();
     const dialogRef = this.dialog.open(MainImageComponent, {
       height: this.mobileQuery.matches ? '100vh' : '90vh',
-      maxWidth: this.mobileQuery.matches ? '100vh' : '80vh',
-      width: this.mobileQuery.matches ? '100vw' : '90vw',
+      maxWidth: this.mobileQuery.matches ? '100vw' : '80vw',
+      width: this.mobileQuery.matches ? '100vw' : '80vw',
       autoFocus: false,
     });
     dialogRef.afterClosed().subscribe(result => {
@@ -69,7 +69,7 @@ export class AppComponent implements OnDestroy {
     nav.close();
     const dialogRef = this.dialog.open(LoginComponent, {
       height: '440px',
-      maxWidth: this.mobileQuery.matches ? '100vh' : '80vh',
+      maxWidth: this.mobileQuery.matches ? '100vw' : '80vw',
       width: this.mobileQuery.matches ? '100vw' : '500px',
       autoFocus: false,
     });
@@ -89,8 +89,8 @@ export class AppComponent implements OnDestroy {
     this.snav.close();
     const dialogRef = this.dialog.open(AddAnuncioComponent, {
       height: this.mobileQuery.matches ? '100vh' : '90vh',
-      maxWidth: this.mobileQuery.matches ? '100vh' : '80vh',
-      width: this.mobileQuery.matches ? '100vw' : '90vw',
+      maxWidth: this.mobileQuery.matches ? '100vw' : '80vw',
+      width: this.mobileQuery.matches ? '100vw' : '80vw',
       autoFocus: false,
     });
     dialogRef.afterClosed().subscribe(result => {
@@ -102,7 +102,7 @@ export class AppComponent implements OnDestroy {
     this.snav.close();
     const dialogRef = this.dialog.open(ViewAnunciosComponent, {
       height: this.mobileQuery.matches ? '100vh' : '90vh',
-      maxWidth: this.mobileQuery.matches ? '100vh' : '80vh',
+      maxWidth: this.mobileQuery.matches ? '100vw' : '80vw',
       width: this.mobileQuery.matches ? '100vw' : '90vw',
       autoFocus: false,
     });
@@ -115,7 +115,7 @@ export class AppComponent implements OnDestroy {
     this.snav.close();
     const dialogRef = this.dialog.open(AddModuloComponent, {
       height: this.mobileQuery.matches ? '100vh' : '90vh',
-      maxWidth: this.mobileQuery.matches ? '100vh' : '80vh',
+      maxWidth: this.mobileQuery.matches ? '100vw' : '80vw',
       width: this.mobileQuery.matches ? '100vw' : '90vw',
       autoFocus: false,
     });
@@ -128,7 +128,7 @@ export class AppComponent implements OnDestroy {
     this.snav.close();
     const dialogRef = this.dialog.open(ViewModulosComponent, {
       height: this.mobileQuery.matches ? '100vh' : '90vh',
-      maxWidth: this.mobileQuery.matches ? '100vh' : '80vh',
+      maxWidth: this.mobileQuery.matches ? '100vw' : '80vw',
       width: this.mobileQuery.matches ? '100vw' : '90vw',
       autoFocus: false,
     });

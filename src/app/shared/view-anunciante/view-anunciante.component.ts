@@ -22,8 +22,8 @@ export class ViewAnuncianteComponent implements OnInit {
   mainDomain = MAIN_DOMAIN;
   anuncio: Anuncio;
   redesSociales: RedSocial[];
-  // temp original: 0
-  visitas = Math.floor(Math.random() * 20);
+
+  visitas = 0;
 
   constructor(
     public dialogRef: MatDialogRef<ViewAnuncianteComponent>,

@@ -99,7 +99,7 @@ export class ViewModulosComponent implements OnInit {
     const dialogRef = this.dialog.open(EditModuloComponent, {
       data: id,
       height: this.mobileQuery.matches ? '100vh' : '90vh',
-      maxWidth: this.mobileQuery.matches ? '100vh' : '80vh',
+      maxWidth: this.mobileQuery.matches ? '100vw' : '80vw',
       width: this.mobileQuery.matches ? '100vw' : '90vw',
       autoFocus: false,
     });

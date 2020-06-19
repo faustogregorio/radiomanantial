@@ -331,7 +331,7 @@ export class EditAnuncioComponent implements OnInit {
             }
           }, error => {
             this.isLoading = false;
-            this.openSnackBar('¡Ocurrio un error!');
+            this.openSnackBar('ERROR: Nombre no permite imagenes');
           }
         );
         break;
@@ -345,7 +345,7 @@ export class EditAnuncioComponent implements OnInit {
             }
           }, error => {
             this.isLoading = false;
-            this.openSnackBar('¡Ocurrio un error!');
+            this.openSnackBar('ERROR: Contenido no permite imagenes');
           }
         );
         break;
