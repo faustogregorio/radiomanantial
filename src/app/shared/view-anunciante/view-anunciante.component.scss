@@ -106,17 +106,19 @@
 ::ng-deep mat-dialog-container::-webkit-scrollbar {
   width: 0px !important;
 }
-
+::ng-deep .cdk-global-overlay-wrapper {
+  backdrop-filter: blur(6px) !important;
+}
 @media screen and (max-width: 599px) {
   ::ng-deep .mat-dialog-container {
     padding: 0px !important;
   }
 }
 
-@media screen and (max-width: 1919px) and (min-width: 1280px) {
+/* @media screen and (max-width: 1919px) and (min-width: 1280px) {
 }
 @media screen and (max-width: 1279px) and (min-width: 960px) {
-}
+} */
 @media screen and (max-width: 959px) and (min-width: 600px) {
   .bottom-container {
     width: 80vw;

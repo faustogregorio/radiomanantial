@@ -35,6 +35,7 @@ import { AnunciosService } from './admin/anuncios/anuncios.service';
 import { AuthService } from './auth/auth.service';
 import { CarouselHorinzontalComponent } from './shared/carousel-horinzontal/carousel-horinzontal.component';
 import { SlideHorizontalComponent } from './shared/carousel-horinzontal/slide-horizontal/slide-horizontal.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { SlideHorizontalComponent } from './shared/carousel-horinzontal/slide-ho
     AnuncioSlideComponent,
     PageNotFoundComponent,
     CarouselHorinzontalComponent,
-    SlideHorizontalComponent
+    SlideHorizontalComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

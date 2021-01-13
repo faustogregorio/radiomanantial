@@ -40,14 +40,6 @@
         </div>
       </div>
     </div>
-
-    <!-- <h1 class="app-name">Responsive App</h1> -->
-    <!-- <img
-      style="margin-left: 10px;"
-      src="../assets/img/logo.png"
-      alt=""
-      height="50px"
-    /> -->
   </mat-toolbar>
 
   <mat-sidenav-container
@@ -104,6 +96,7 @@
         </div>
         <div class="contenido" fxFlexOrder.xs="1">
           <router-outlet></router-outlet>
+
         </div>
         <div fxFlex="100%" *ngIf="mobileQuery.matches" fxFlexOrder.xs="2">
           <app-carousel-horinzontal></app-carousel-horinzontal>
@@ -119,7 +112,7 @@
           ></iframe>
         </div>
       </div>
-
+      <!-- <app-footer></app-footer> -->
       <div class="radio">
         <app-radio
           fxFlex="100%"
