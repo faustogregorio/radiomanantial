@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, HostListener, Input } from '@angular/core';
 import { FormBuilder, FormArray, FormGroup } from '@angular/forms';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { AnunciosService } from 'src/app/admin/anuncios/anuncios.service';
@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { ViewAnuncianteComponent } from '../view-anunciante/view-anunciante.component';
 import { map } from 'rxjs/operators';
+import { FacebookAPIService } from 'src/app/services/facebook-api.service';
 @Component({
   selector: 'app-carousel',
   templateUrl: './carousel.component.html',
@@ -24,6 +25,7 @@ import { map } from 'rxjs/operators';
   ]
 })
 export class CarouselComponent implements OnInit, OnDestroy {
+  @Input() facebookAPI = false;
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
 
@@ -42,7 +44,8 @@ export class CarouselComponent implements OnInit, OnDestroy {
     media: MediaMatcher,
     private formBuilder: FormBuilder,
     private anunciosService: AnunciosService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private facebook: FacebookAPIService
   ) {
     this.carouselForm = this.formBuilder.group({
       carousel: this.formBuilder.array([])
@@ -66,8 +69,63 @@ export class CarouselComponent implements OnInit, OnDestroy {
   }
   ngOnInit(): void {
     this.onResize(window.innerWidth);
+    if (this.facebookAPI) {
+      this.initFacebookPosts();
+    } else {
+      this.initAnuncios();
+    }
+
+    this.infiniteSlideDown();
+  }
+  initFacebookPosts() {
     this.anunciosService.anunciosChange.subscribe(
       (result: { id: number, img: string, operation: string }) => {
+        console.log(result);
+        if (result.id !== 0) {
+          if (result.operation === 'add') {
+            this.carouselData.push(result);
+          } else if (result.operation === 'update') {
+            this.carouselData = this.carouselData.filter(
+              anuncio => {
+                if (anuncio.id !== result.id) {
+                  return anuncio;
+                } else {
+                  anuncio.img = result.img;
+                  return anuncio;
+                }
+              }
+            );
+          } else {
+            this.carouselData = this.carouselData.filter(anuncio => { if (anuncio.id !== result.id) return anuncio });
+          }
+          this.slideDown = 0;
+          this.slideUp = 19;
+          this.carouselForm.patchValue({
+            carousel: []
+          });
+          this.initCarousel();
+        }
+      }
+    );
+    this.facebook.getFacebookPosts().subscribe(
+      result => {
+        let sliderAnunciantes = [];
+        const data = result['data'].map(row => { return { id: row.id, img: row.full_picture }; });
+        console.log(data);
+        for (const post of data) {
+          sliderAnunciantes.push({ id: post['id'], img: post['img'] });
+        }
+        this.carouselData = [this.carouselData[0], ...sliderAnunciantes];
+        this.initCarousel();
+
+      }, error => {
+      }
+    );
+  }
+  initAnuncios() {
+    this.anunciosService.anunciosChange.subscribe(
+      (result: { id: number, img: string, operation: string }) => {
+        console.log(result);
         if (result.id !== 0) {
           if (result.operation === 'add') {
             this.carouselData.push(result);
@@ -107,7 +165,6 @@ export class CarouselComponent implements OnInit, OnDestroy {
       }, error => {
       }
     );
-    this.infiniteSlideDown();
   }
   initCarousel() {
     if (this.carouselData.length > 0) {
@@ -115,7 +172,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
         for (const slide of this.carouselData) {
           this.carousel.insert(0, this.formBuilder.group({
             id: slide.id,
-            img: slide.id === 0 ? slide.img : `${this.mainDomain}/uploads/${slide.img}`
+            img: slide.id === 0 ? slide.img : this.facebookAPI ? `${slide.img}` : `${this.mainDomain}/uploads/${slide.img}`
           }));
         }
       }
@@ -173,7 +230,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   initSlide(data: any) {
     return this.formBuilder.group({
       id: data.id,
-      img: data.id === 0 ? data.img : `${this.mainDomain}/uploads/${data.img}`
+      img: data.id === 0 ? data.img : this.facebookAPI ? `${data.img}` : `${this.mainDomain}/uploads/${data.img}`
     });
   }
 

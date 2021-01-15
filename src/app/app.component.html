@@ -92,7 +92,7 @@
     <mat-sidenav-content>
       <div style="width: 100%;" fxLayout.xs="row wrap" fxLayoutAlign="start">
         <div class="anuncio" *ngIf="!mobileQuery.matches">
-          <app-carousel></app-carousel>
+          <app-carousel [facebookAPI]="true"></app-carousel>
         </div>
         <div class="contenido" fxFlexOrder.xs="1">
           <router-outlet></router-outlet>

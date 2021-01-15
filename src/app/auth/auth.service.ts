@@ -7,6 +7,7 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class AuthService {
   url = DOMAIN;
+
   constructor(
     private http: HttpClient,
     private cookieService: CookieService
@@ -25,4 +26,6 @@ export class AuthService {
     }
     return this.http.post(`${this.url}/authenticated.php`, { token: token });
   }
+
+
 }
