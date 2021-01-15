@@ -1,9 +1,70 @@
-<img
+<!-- <img
   [style.cursor]="id === 0 ? 'default' : 'pointer'"
   (click)="emitSlideIndex(id)"
   [src]="img"
   alt=""
   width="100%"
   height="100%"
-  style="object-fit: cover;"
+  style="object-fit: contain;"
 />
+ -->
+ <div class="slide">
+  <div
+    style="
+      position: absolute;
+
+      filter: blur(4.5px);
+
+      opacity: 0.3;
+    "
+  >
+    <img
+      [src]="img"
+      alt=""
+      style="width: 100%; height: 100%; object-fit: cover"
+    />
+  </div>
+  <div
+    style="position: relative; width: 100%; height: 100%"
+    fxLayoutAlign="center end"
+  >
+    <!-- <div
+      *ngIf="message !== ''"
+      style="
+        position: absolute;
+        min-height: 10px;
+        max-height: 92px;
+        min-width: 10%;
+        max-width: 70%;
+        background-color: rgba(45, 45, 45, 0.85);
+        border-radius: 5px;
+      "
+    >
+      <p
+        style="
+          color: rgb(240, 240, 240);
+          text-align: center;
+          margin: 10px;
+          font-size: 1.2rem;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: normal;
+          -webkit-line-clamp: 3;
+        "
+      >
+        {{ message }}
+      </p>
+    </div> -->
+    <img
+      [src]="img"
+      alt=""
+      width="100%"
+      height="100%"
+      style="object-fit: contain"
+      [style.cursor]="id === 0 ? 'default' : 'pointer'"
+      (click)="emitSlideIndex(id)"
+    />
+  </div>
+</div>

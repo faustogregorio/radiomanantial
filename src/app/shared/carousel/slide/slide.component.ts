@@ -7,13 +7,13 @@ import { FormGroup } from '@angular/forms';
   styleUrls: ['./slide.component.scss']
 })
 export class SlideComponent implements OnInit {
-
   @Input() slideForm: FormGroup;
   @Output() onClickSlide = new EventEmitter<number>();
 
   constructor() { }
 
   ngOnInit(): void {
+    console.log(this.slideForm);
   }
 
   emitSlideIndex(id: number) {
@@ -25,6 +25,10 @@ export class SlideComponent implements OnInit {
 
   get img() {
     return this.slideForm.get('img').value;
+  }
+
+  get message() {
+    return this.slideForm.get('message').value;
   }
 
 }

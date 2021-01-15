@@ -251,9 +251,10 @@ h1.app-name {
   .chat {
     position: relative;
     width: calc(100% - 30px - 30px);
+    margin-bottom: 40px;
     left: 30px;
     top: 0px;
-    height: 400px;
+    height: 100vh;
     right: 30px;
   }
 }

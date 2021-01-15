@@ -50,7 +50,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     this.carouselForm = this.formBuilder.group({
       carousel: this.formBuilder.array([])
     });
-    this.carouselData.push({ id: 0, img: `assets/img/anunciate.jpg` });
+    this.carouselData.push({ id: 0, img: `assets/img/anunciate.jpg`, message: '' });
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -69,6 +69,36 @@ export class CarouselComponent implements OnInit, OnDestroy {
   }
   ngOnInit(): void {
     this.onResize(window.innerWidth);
+    this.anunciosService.anunciosChange.subscribe(
+      (result: { id: number, img: string, message: string, operation: string }) => {
+        console.log(result);
+        if (result.id !== 0) {
+          if (result.operation === 'add') {
+            this.carouselData.push(result);
+          } else if (result.operation === 'update') {
+            this.carouselData = this.carouselData.filter(
+              anuncio => {
+                if (anuncio.id !== result.id) {
+                  return anuncio;
+                } else {
+                  anuncio.img = result.img;
+                  return anuncio;
+                }
+              }
+            );
+          } else {
+            this.carouselData = this.carouselData.filter(anuncio => { if (anuncio.id !== result.id) return anuncio });
+          }
+          this.slideDown = 0;
+          this.slideUp = 19;
+          this.carouselForm.patchValue({
+            carousel: []
+          });
+          this.initCarousel();
+        }
+      }
+    );
+
     if (this.facebookAPI) {
       this.initFacebookPosts();
     } else {
@@ -78,42 +108,14 @@ export class CarouselComponent implements OnInit, OnDestroy {
     this.infiniteSlideDown();
   }
   initFacebookPosts() {
-    this.anunciosService.anunciosChange.subscribe(
-      (result: { id: number, img: string, operation: string }) => {
-        console.log(result);
-        if (result.id !== 0) {
-          if (result.operation === 'add') {
-            this.carouselData.push(result);
-          } else if (result.operation === 'update') {
-            this.carouselData = this.carouselData.filter(
-              anuncio => {
-                if (anuncio.id !== result.id) {
-                  return anuncio;
-                } else {
-                  anuncio.img = result.img;
-                  return anuncio;
-                }
-              }
-            );
-          } else {
-            this.carouselData = this.carouselData.filter(anuncio => { if (anuncio.id !== result.id) return anuncio });
-          }
-          this.slideDown = 0;
-          this.slideUp = 19;
-          this.carouselForm.patchValue({
-            carousel: []
-          });
-          this.initCarousel();
-        }
-      }
-    );
     this.facebook.getFacebookPosts().subscribe(
       result => {
         let sliderAnunciantes = [];
-        const data = result['data'].map(row => { return { id: row.id, img: row.full_picture }; });
+        const data = result['data'].map(row => { return { id: row.id, img: row.full_picture, message: row.message }; }).filter(row => { if (row.img) { return row } });
         console.log(data);
+
         for (const post of data) {
-          sliderAnunciantes.push({ id: post['id'], img: post['img'] });
+          sliderAnunciantes.push({ id: post['id'], img: post['img'], message: post.message ? post.message : '' });
         }
         this.carouselData = [this.carouselData[0], ...sliderAnunciantes];
         this.initCarousel();
@@ -123,41 +125,13 @@ export class CarouselComponent implements OnInit, OnDestroy {
     );
   }
   initAnuncios() {
-    this.anunciosService.anunciosChange.subscribe(
-      (result: { id: number, img: string, operation: string }) => {
-        console.log(result);
-        if (result.id !== 0) {
-          if (result.operation === 'add') {
-            this.carouselData.push(result);
-          } else if (result.operation === 'update') {
-            this.carouselData = this.carouselData.filter(
-              anuncio => {
-                if (anuncio.id !== result.id) {
-                  return anuncio;
-                } else {
-                  anuncio.img = result.img;
-                  return anuncio;
-                }
-              }
-            );
-          } else {
-            this.carouselData = this.carouselData.filter(anuncio => { if (anuncio.id !== result.id) return anuncio });
-          }
-          this.slideDown = 0;
-          this.slideUp = 19;
-          this.carouselForm.patchValue({
-            carousel: []
-          });
-          this.initCarousel();
-        }
-      }
-    );
+
     this.anunciosService.getAnuncios().subscribe(
       result => {
         if (result['success']) {
           let sliderAnunciantes = [];
           for (const anunciante of result['data']) {
-            sliderAnunciantes.push({ id: anunciante['id'], img: anunciante['foto'] });
+            sliderAnunciantes.push({ id: anunciante['id'], img: anunciante['foto'], message: '' });
           }
           this.carouselData = [this.carouselData[0], ...sliderAnunciantes];
           this.initCarousel();
@@ -172,7 +146,8 @@ export class CarouselComponent implements OnInit, OnDestroy {
         for (const slide of this.carouselData) {
           this.carousel.insert(0, this.formBuilder.group({
             id: slide.id,
-            img: slide.id === 0 ? slide.img : this.facebookAPI ? `${slide.img}` : `${this.mainDomain}/uploads/${slide.img}`
+            img: slide.id === 0 ? slide.img : this.facebookAPI ? `${slide.img}` : `${this.mainDomain}/uploads/${slide.img}`,
+            message: slide.message
           }));
         }
       }
@@ -230,7 +205,8 @@ export class CarouselComponent implements OnInit, OnDestroy {
   initSlide(data: any) {
     return this.formBuilder.group({
       id: data.id,
-      img: data.id === 0 ? data.img : this.facebookAPI ? `${data.img}` : `${this.mainDomain}/uploads/${data.img}`
+      img: data.id === 0 ? data.img : this.facebookAPI ? `${data.img}` : `${this.mainDomain}/uploads/${data.img}`,
+      message: data.message
     });
   }
 
@@ -249,13 +225,13 @@ export class CarouselComponent implements OnInit, OnDestroy {
   infiniteSlideDown() {
     this.slideDownInterval = setInterval(() => {
       this.addSlide();
-    }, 3000);
+    }, 5000);
 
   }
   infiniteSlideUp() {
     this.slideUpInterval = setInterval(() => {
       this.removeBottomSlide();
-    }, 3000);
+    }, 5000);
   }
 
   ngOnDestroy(): void {

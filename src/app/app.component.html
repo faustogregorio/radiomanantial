@@ -3,38 +3,35 @@
   [class.is-mobile]="mobileQuery.matches || mobileQuery.matches"
 >
   <mat-toolbar color="primary" class="toolbar">
-    <div
-      style="width: 100%; height: 100%;"
-      fxLayoutAlign="space-between center"
-    >
+    <div style="width: 100%; height: 100%" fxLayoutAlign="space-between center">
       <button mat-icon-button (click)="openSidenav(snav)">
         <mat-icon>settings</mat-icon>
       </button>
 
       <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
         <a
-          style="height: 100%;"
+          style="height: 100%"
           fxLayoutAlign="start center"
           fxLayoutGap="4px"
           href="https://www.facebook.com/RadioManantialMexico/"
           target="_blank"
-          style="color: white;"
+          style="color: white"
         >
           <img src="assets/img/facebook-logo.svg" alt="" height="26px" />
           <span *ngIf="!mobileQuery.matches">Radio Manantial</span>
         </a>
         <a
-          style="height: 100%;"
+          style="height: 100%"
           fxLayoutAlign="start center"
           fxLayoutGap="4px"
           href="https://api.whatsapp.com/send?phone=523511044183&text=&source=&data=&app_absent="
           target="_blank"
-          style="color: white;"
+          style="color: white"
         >
           <img src="assets/img/whatsapp.png" alt="" height="30px" />
           <span *ngIf="!mobileQuery.matches">351 104 4183</span>
         </a>
-        <div style="height: 100%;" fxLayoutAlign="start center">
+        <div style="height: 100%" fxLayoutAlign="start center">
           <mat-icon>phone</mat-icon>
           <span>355 553 3549 </span>
         </div>
@@ -51,7 +48,7 @@
       mode="over'"
       fixedInViewport="true"
       [fixedTopGap]="mobileQuery.matches ? 56 : 64"
-      style="width: 250px;"
+      style="width: 250px"
     >
       <mat-nav-list>
         <a mat-list-item (click)="openHomeImage(snav)"
@@ -90,13 +87,17 @@
     </mat-sidenav>
 
     <mat-sidenav-content>
-      <div style="width: 100%;" fxLayout.xs="row wrap" fxLayoutAlign="start">
+      <div
+        style="width: 100%"
+        fxLayout.xs="column"
+        fxLayoutAlign="start"
+        fxLayoutGap.xs="40px"
+      >
         <div class="anuncio" *ngIf="!mobileQuery.matches">
           <app-carousel [facebookAPI]="true"></app-carousel>
         </div>
         <div class="contenido" fxFlexOrder.xs="1">
           <router-outlet></router-outlet>
-
         </div>
         <div fxFlex="100%" *ngIf="mobileQuery.matches" fxFlexOrder.xs="2">
           <app-carousel-horinzontal></app-carousel-horinzontal>
@@ -105,7 +106,7 @@
           <iframe
             id="chat"
             src="https://www6.cbox.ws/box/?boxid=838291&boxtag=i07IvJ"
-            style="width: 100%; height: calc(100% - 60px);"
+            style="width: 100%; height: calc(100% - 60px)"
             frameborder="0"
             scrolling="no"
             #myChat
