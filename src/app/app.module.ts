@@ -22,13 +22,13 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import {MatMenuModule} from '@angular/material/menu';
+import { MatMenuModule } from '@angular/material/menu';
 import { QuillModule } from 'ngx-quill';
-import {MatSelectModule} from '@angular/material/select';
+import { MatSelectModule } from '@angular/material/select';
 import { ViewAnuncianteComponent } from './shared/view-anunciante/view-anunciante.component';
 import { AnuncioSliderComponent } from './shared/view-anunciante/anuncio-slider/anuncio-slider.component';
 import { AnuncioSlideComponent } from './shared/view-anunciante/anuncio-slider/anuncio-slide/anuncio-slide.component';
-import {MatBadgeModule} from '@angular/material/badge';
+import { MatBadgeModule } from '@angular/material/badge';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { ModuloService } from './admin/modulos/modulo.service';
 import { AnunciosService } from './admin/anuncios/anuncios.service';
@@ -36,6 +36,8 @@ import { AuthService } from './auth/auth.service';
 import { CarouselHorinzontalComponent } from './shared/carousel-horinzontal/carousel-horinzontal.component';
 import { SlideHorizontalComponent } from './shared/carousel-horinzontal/slide-horizontal/slide-horizontal.component';
 import { FooterComponent } from './footer/footer.component';
+import { MostrarFacebookPostComponent } from './shared/mostrar-facebook-post/mostrar-facebook-post.component';
+import { FacebookModule, FB_PARSE_LAZY_LOAD, FacebookService } from '@greg-md/ng-facebook';
 
 @NgModule({
   declarations: [
@@ -49,10 +51,14 @@ import { FooterComponent } from './footer/footer.component';
     PageNotFoundComponent,
     CarouselHorinzontalComponent,
     SlideHorizontalComponent,
-    FooterComponent
+    FooterComponent,
+    MostrarFacebookPostComponent
   ],
   imports: [
     BrowserModule,
+
+    // 3. Import Facebook components for a specific module.
+    FacebookModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     FlexLayoutModule,
@@ -73,9 +79,16 @@ import { FooterComponent } from './footer/footer.component';
     MatBadgeModule
   ],
   entryComponents: [
-    ViewAnuncianteComponent
+    ViewAnuncianteComponent,
+    MostrarFacebookPostComponent
   ],
   providers: [
+    FacebookModule,
+    FacebookService,
+    {
+      provide: FB_PARSE_LAZY_LOAD,
+      useValue: 100,
+    },
     CookieService,
     {
       provide: HTTP_INTERCEPTORS,

@@ -45,7 +45,7 @@
           -webkit-line-clamp: 3;
         "
         [style.cursor]="id === 0 ? 'default' : 'pointer'"
-        (click)="emitSlideIndex(id)"
+        (click)="emitSlideIndex()"
       >
         {{ message }}
       </p>
@@ -57,7 +57,7 @@
       height="100%"
       style="object-fit: contain"
       [style.cursor]="id === 0 ? 'default' : 'pointer'"
-      (click)="emitSlideIndex(id)"
+      (click)="emitSlideIndex()"
     />
   </div>
 </div>

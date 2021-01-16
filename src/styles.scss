@@ -108,9 +108,19 @@ body { margin: 0; font-family: 'Raleway', sans-serif; }
 a {
   text-decoration: none;
 }
+.post-dialog {
+  width: 500px;
+  min-height: 200px;
 
-
-
+}
+.post-dialog .mat-dialog-container {
+  border-radius: 0px;
+  padding: 0;
+  margin: 0;
+}
+.cdk-overlay-dark-backdrop {
+  backdrop-filter: blur(5px) !important;
+}
 @media screen and (max-width: 599px) {
   .mat-dialog-container {
     border-radius: 0px !important;

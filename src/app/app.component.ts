@@ -1,5 +1,5 @@
 import { MediaMatcher } from '@angular/cdk/layout';
-import { ChangeDetectorRef, Component, OnDestroy, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MainImageComponent } from './admin/home/main-image/main-image.component';
@@ -13,13 +13,19 @@ import { AddAnuncioComponent } from './admin/anuncios/add-anuncio/add-anuncio.co
 import { ViewAnunciosComponent } from './admin/anuncios/view-anuncios/view-anuncios.component';
 import { AddModuloComponent } from './admin/modulos/add-modulo/add-modulo.component';
 import { ViewModulosComponent } from './admin/modulos/view-modulos/view-modulos.component';
+import { environment } from 'src/environments/environment.prod';
+import { FacebookService } from '@greg-md/ng-facebook';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnDestroy {
+export class AppComponent implements OnDestroy, OnInit {
+  settings = {
+    appId : environment.facebookAppId,
+    version: 'v9.0',
+  };
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
   @ViewChild('snav') snav: MatSidenav;
@@ -28,11 +34,15 @@ export class AppComponent implements OnDestroy {
     media: MediaMatcher,
     public dialog: MatDialog,
     private authService: AuthService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private facebookService: FacebookService
   ) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
+  }
+  ngOnInit(): void {
+    this.facebookService.init(this.settings).subscribe();
   }
 
   ngOnDestroy(): void {

@@ -6,8 +6,8 @@ import { MAIN_DOMAIN } from '../domain';
 import { MatDialog } from '@angular/material/dialog';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { ViewAnuncianteComponent } from '../view-anunciante/view-anunciante.component';
-import { map } from 'rxjs/operators';
 import { FacebookAPIService } from 'src/app/services/facebook-api.service';
+import { MostrarFacebookPostComponent } from '../mostrar-facebook-post/mostrar-facebook-post.component';
 @Component({
   selector: 'app-carousel',
   templateUrl: './carousel.component.html',
@@ -50,7 +50,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     this.carouselForm = this.formBuilder.group({
       carousel: this.formBuilder.array([])
     });
-    this.carouselData.push({ id: 0, img: `assets/img/anunciate.jpg`, message: '' });
+    this.carouselData.push({ id: 0, img: `assets/img/anunciate.jpg`, message: '', opcion: '' });
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -70,7 +70,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.onResize(window.innerWidth);
     this.anunciosService.anunciosChange.subscribe(
-      (result: { id: number, img: string, message: string, operation: string }) => {
+      (result: { id: number, img: string, message: string, opcion: string, operation: string }) => {
         console.log(result);
         if (result.id !== 0) {
           if (result.operation === 'add') {
@@ -87,7 +87,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
               }
             );
           } else {
-            this.carouselData = this.carouselData.filter(anuncio => { if (anuncio.id !== result.id) return anuncio });
+            this.carouselData = this.carouselData.filter(anuncio => { if (anuncio.id !== result.id) { return anuncio; } });
           }
           this.slideDown = 0;
           this.slideUp = 19;
@@ -110,12 +110,14 @@ export class CarouselComponent implements OnInit, OnDestroy {
   initFacebookPosts() {
     this.facebook.getFacebookPosts().subscribe(
       result => {
-        let sliderAnunciantes = [];
-        const data = result['data'].map(row => { return { id: row.id, img: row.full_picture, message: row.message }; }).filter(row => { if (row.img) { return row } });
+        const sliderAnunciantes = [];
+        const data = result['data'].map(row => {
+          return { id: row.id, img: row.full_picture, message: row.message };
+        }).filter(row => { if (row.img) { return row; } });
         console.log(data);
 
         for (const post of data) {
-          sliderAnunciantes.push({ id: post['id'], img: post['img'], message: post.message ? post.message : '' });
+          sliderAnunciantes.push({ id: post.id, img: post.img ? post.img : '', message: post.message ? post.message : '', opcion: 'post' });
         }
         this.carouselData = [this.carouselData[0], ...sliderAnunciantes];
         this.initCarousel();
@@ -129,9 +131,9 @@ export class CarouselComponent implements OnInit, OnDestroy {
     this.anunciosService.getAnuncios().subscribe(
       result => {
         if (result['success']) {
-          let sliderAnunciantes = [];
+          const sliderAnunciantes = [];
           for (const anunciante of result['data']) {
-            sliderAnunciantes.push({ id: anunciante['id'], img: anunciante['foto'], message: '' });
+            sliderAnunciantes.push({ id: anunciante['id'], img: anunciante['foto'], message: '', opcion: 'anuncio' });
           }
           this.carouselData = [this.carouselData[0], ...sliderAnunciantes];
           this.initCarousel();
@@ -147,7 +149,8 @@ export class CarouselComponent implements OnInit, OnDestroy {
           this.carousel.insert(0, this.formBuilder.group({
             id: slide.id,
             img: slide.id === 0 ? slide.img : this.facebookAPI ? `${slide.img}` : `${this.mainDomain}/uploads/${slide.img}`,
-            message: slide.message
+            message: slide.message,
+            opcion: slide.opcion
           }));
         }
       }
@@ -206,7 +209,8 @@ export class CarouselComponent implements OnInit, OnDestroy {
     return this.formBuilder.group({
       id: data.id,
       img: data.id === 0 ? data.img : this.facebookAPI ? `${data.img}` : `${this.mainDomain}/uploads/${data.img}`,
-      message: data.message
+      message: data.message,
+      opcion: data.opcion
     });
   }
 
@@ -245,16 +249,27 @@ export class CarouselComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSelectedAnuncio(id) {
-    if (id === 0) return;
-    const dialogRef = this.dialog.open(ViewAnuncianteComponent, {
-      data: id,
-      height: 'calc(100vh - 60px)',
-      width: this.mobileQuery.matches ? '100vw' : '80vw',
-      autoFocus: false,
-    });
-    dialogRef.afterClosed().subscribe(result => {
-    });
+  onSlideClicked(slide: {id: any, img: string, message: string, opcion: string}) {
+    if (slide.id === 0) { return; }
+    if (slide.opcion === 'post') {
+      console.log(slide);
+      this.dialog.open(MostrarFacebookPostComponent, {
+        data: slide.id,
+        autoFocus: true,
+        panelClass: 'post-dialog'
+      });
+
+    } else {
+      const dialogRef = this.dialog.open(ViewAnuncianteComponent, {
+        data: slide.id,
+        height: 'calc(100vh - 60px)',
+        width: this.mobileQuery.matches ? '100vw' : '80vw',
+        autoFocus: false,
+      });
+      dialogRef.afterClosed().subscribe(result => {
+      });
+    }
+
   }
 
 }

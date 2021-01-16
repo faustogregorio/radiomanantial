@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, Input } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { MAIN_DOMAIN } from '../domain';
 import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
@@ -24,6 +24,8 @@ import { ViewAnuncianteComponent } from '../view-anunciante/view-anunciante.comp
   ]
 })
 export class CarouselHorinzontalComponent implements OnInit {
+  @Input() facebookAPI = false;
+
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
 

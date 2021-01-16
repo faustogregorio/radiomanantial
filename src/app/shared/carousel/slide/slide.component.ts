@@ -8,7 +8,7 @@ import { FormGroup } from '@angular/forms';
 })
 export class SlideComponent implements OnInit {
   @Input() slideForm: FormGroup;
-  @Output() onClickSlide = new EventEmitter<number>();
+  @Output() onClickSlide = new EventEmitter<any>();
 
   constructor() { }
 
@@ -16,8 +16,8 @@ export class SlideComponent implements OnInit {
     console.log(this.slideForm);
   }
 
-  emitSlideIndex(id: number) {
-    this.onClickSlide.emit(id);
+  emitSlideIndex() {
+    this.onClickSlide.emit(this.slideForm.value);
   }
   get id() {
     return this.slideForm.get('id').value;
