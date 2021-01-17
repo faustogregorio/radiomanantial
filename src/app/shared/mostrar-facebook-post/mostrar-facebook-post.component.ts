@@ -30,7 +30,6 @@ export class MostrarFacebookPostComponent implements OnInit {
       <div
       class="fb-post"
       data-href="https://www.facebook.com/${this.pageId}/posts/${this.postId}/"
-      data-width="500"
       data-show-text="true"
     >
     </div>
