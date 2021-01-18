@@ -25,7 +25,8 @@ import { MostrarFacebookPostComponent } from '../mostrar-facebook-post/mostrar-f
   ]
 })
 export class CarouselComponent implements OnInit, OnDestroy {
-  @Input() facebookAPI = false;
+  @Input() mostrarPublicacionesFacebook = false;
+  @Input() mostrarAnuncios = false;
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
 
@@ -70,10 +71,10 @@ export class CarouselComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.onResize(window.innerWidth);
     this.anunciosService.anunciosChange.subscribe(
-      (result: { id: number, img: string, message: string, opcion: string, operation: string }) => {
+      (result: { id: number, img: string, operation: string }) => {
         console.log(result);
         if (result.id !== 0) {
-          if (result.operation === 'add') {
+          /* if (result.operation === 'add') {
             this.carouselData.push(result);
           } else if (result.operation === 'update') {
             this.carouselData = this.carouselData.filter(
@@ -94,14 +95,16 @@ export class CarouselComponent implements OnInit, OnDestroy {
           this.carouselForm.patchValue({
             carousel: []
           });
-          this.initCarousel();
+          this.initCarousel(); */
+          window.location.href = './';
         }
       }
     );
 
-    if (this.facebookAPI) {
+    if (this.mostrarPublicacionesFacebook) {
       this.initFacebookPosts();
-    } else {
+    }
+    if (this.mostrarAnuncios) {
       this.initAnuncios();
     }
 
@@ -109,21 +112,27 @@ export class CarouselComponent implements OnInit, OnDestroy {
   }
   initFacebookPosts() {
     this.facebook.getFacebookPosts().subscribe(
-      result => {
+      (result: any) => {
         const sliderAnunciantes = [];
-        const data = result['data'].map(row => {
-          return { id: row.id, img: row.full_picture, message: row.message };
-        });
-        console.log(data);
+        if (result.data) {
+          const sliderAnunciantes = [];
+          const data = result['data'].map(row => {
+            return { id: row.id, img: row.full_picture, message: row.message };
+          });
 
-        for (const post of data) {
-          sliderAnunciantes.push(
-            { id: post.id, img: post.img ? post.img : 'assets/img/facebook_fondo.jpg', message: post.message ? post.message : 'Ver publicación...', opcion: 'post' });
+          for (const post of data) {
+            sliderAnunciantes.push(
+              { id: post.id, img: post.img ? post.img : 'assets/img/facebook_fondo.jpg', message: post.message ? post.message : 'Ver publicación...', opcion: 'post' });
+          }
+          this.carouselData = this.carouselData.concat(sliderAnunciantes);
+          this.initCarousel();
+        } else {
+          this.initCarousel();
         }
-        this.carouselData = [this.carouselData[0], ...sliderAnunciantes];
-        this.initCarousel();
+
 
       }, error => {
+        this.initCarousel();
       }
     );
   }
@@ -136,10 +145,13 @@ export class CarouselComponent implements OnInit, OnDestroy {
           for (const anunciante of result['data']) {
             sliderAnunciantes.push({ id: anunciante['id'], img: anunciante['foto'], message: '', opcion: 'anuncio' });
           }
-          this.carouselData = [this.carouselData[0], ...sliderAnunciantes];
+          this.carouselData = this.carouselData.concat(sliderAnunciantes);
+          this.initCarousel();
+        } else {
           this.initCarousel();
         }
       }, error => {
+        this.initCarousel();
       }
     );
   }
@@ -149,7 +161,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
         for (const slide of this.carouselData) {
           this.carousel.insert(0, this.formBuilder.group({
             id: slide.id,
-            img: slide.id === 0 ? slide.img : this.facebookAPI ? `${slide.img}` : `${this.mainDomain}/uploads/${slide.img}`,
+            img: slide.id === 0 ? slide.img : slide.opcion === 'post' ? `${slide.img}` : `${this.mainDomain}/uploads/${slide.img}`,
             message: slide.message,
             opcion: slide.opcion
           }));
@@ -209,7 +221,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   initSlide(data: any) {
     return this.formBuilder.group({
       id: data.id,
-      img: data.id === 0 ? data.img : this.facebookAPI ? `${data.img}` : `${this.mainDomain}/uploads/${data.img}`,
+      img: data.id === 0 ? data.img : data.opcion === 'post' ? `${data.img}` : `${this.mainDomain}/uploads/${data.img}`,
       message: data.message,
       opcion: data.opcion
     });

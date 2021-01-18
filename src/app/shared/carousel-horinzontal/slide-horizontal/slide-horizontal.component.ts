@@ -8,14 +8,14 @@ import { FormGroup } from '@angular/forms';
 })
 export class SlideHorizontalComponent implements OnInit {
   @Input() slideForm: FormGroup;
-  @Output() onClickSlide = new EventEmitter<number>();
+  @Output() onClickSlide = new EventEmitter<any>();
 
   constructor() { }
 
   ngOnInit(): void {
   }
-  emitSlideIndex(id: number) {
-    this.onClickSlide.emit(id);
+  emitSlideIndex() {
+    this.onClickSlide.emit(this.slideForm.value);
   }
 
   get id() {
@@ -24,6 +24,10 @@ export class SlideHorizontalComponent implements OnInit {
 
   get img() {
     return this.slideForm.get('img').value;
+  }
+
+  get message() {
+    return this.slideForm.get('message').value;
   }
 
 }

@@ -34,6 +34,7 @@ import { AjustesComponent } from './ajustes/ajustes.component';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {TextFieldModule} from '@angular/cdk/text-field';
+import { PipesModule } from '../pipes/pipes.module';
 
 @NgModule({
   declarations: [
@@ -73,7 +74,8 @@ import {TextFieldModule} from '@angular/cdk/text-field';
     MatMenuModule,
     MatExpansionModule,
     MatCheckboxModule,
-    TextFieldModule
+    TextFieldModule,
+    PipesModule
   ],
   entryComponents: [
     MainImageComponent,

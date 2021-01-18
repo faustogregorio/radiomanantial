@@ -109,11 +109,10 @@ a {
   text-decoration: none;
 }
 .post-dialog {
-  width: 680px;
+  width: 700px;
   min-width: 10vh;
   min-height: 10vh;
-  max-height: 95vh;
-  overflow-y: auto;
+  max-height: 98vh;
 }
 .post-dialog .mat-dialog-container {
   border-radius: 5px;
@@ -127,5 +126,8 @@ a {
 @media screen and (max-width: 599px) {
   .mat-dialog-container {
     border-radius: 0px !important;
+  }
+  .post-dialog {
+    width: 95vw;
   }
 }

@@ -10,9 +10,9 @@ import { AddAnuncioComponent } from './admin/anuncios/add-anuncio/add-anuncio.co
 import { ViewAnunciosComponent } from './admin/anuncios/view-anuncios/view-anuncios.component';
 import { AddModuloComponent } from './admin/modulos/add-modulo/add-modulo.component';
 import { ViewModulosComponent } from './admin/modulos/view-modulos/view-modulos.component';
-import { environment } from 'src/environments/environment.prod';
-import { FacebookService } from '@greg-md/ng-facebook';
+
 import { AjustesComponent } from './admin/ajustes/ajustes.component';
+
 
 @Component({
   selector: 'app-root',
@@ -20,10 +20,7 @@ import { AjustesComponent } from './admin/ajustes/ajustes.component';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnDestroy, OnInit {
-  settings = {
-    appId : environment.facebookAppId,
-    version: 'v9.0',
-  };
+  mostrar = { anuncios: true, publicacionesFacebook: true };
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
   @ViewChild('snav') snav: MatSidenav;
@@ -32,15 +29,13 @@ export class AppComponent implements OnDestroy, OnInit {
     media: MediaMatcher,
     public dialog: MatDialog,
     private authService: AuthService,
-    private cookieService: CookieService,
-    private facebookService: FacebookService
+    private cookieService: CookieService
   ) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
   }
   ngOnInit(): void {
-    this.facebookService.init(this.settings).subscribe();
   }
 
   ngOnDestroy(): void {
@@ -147,12 +142,18 @@ export class AppComponent implements OnDestroy, OnInit {
 
   abrirAjustes() {
     this.snav.close();
-    this.dialog.open(AjustesComponent, {
+    const dialogRef = this.dialog.open(AjustesComponent, {
+      data: this.mostrar,
       maxHeight: this.mobileQuery.matches ? '100vh' : '85vh',
       minHeight: this.mobileQuery.matches ? '100vh' : '100px',
       maxWidth: this.mobileQuery.matches ? '100vw' : '95vw',
       minWidth: this.mobileQuery.matches ? '100vw' : '100px',
       autoFocus: false,
+    });
+    dialogRef.afterClosed().subscribe(fueModificado => {
+      if (fueModificado) { // si se modifica que mostrar en el carrusel se regarga la página o se actualiza el token
+        window.location.href = './';
+      }
     });
   }
 }

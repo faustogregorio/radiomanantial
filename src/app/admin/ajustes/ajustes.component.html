@@ -11,7 +11,7 @@
       <mat-panel-title> Carrusel </mat-panel-title>
       <mat-panel-description>
         Elegir que mostrar
-        <mat-icon>{{
+        <mat-icon style="color: #f29f05;">{{
           anunciosChecked && publicacionesFacebookChecked
             ? "check_box"
             : anunciosChecked || publicacionesFacebookChecked
@@ -21,10 +21,14 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
     <div style="width: 100%" fxLayout="column">
-      <mat-checkbox [(ngModel)]="anunciosChecked"
+      <mat-checkbox
+        [(ngModel)]="anunciosChecked"
+        (click)="checkMostrarAnunciosChanged()"
         >Mostrar Anuncios</mat-checkbox
       >
-      <mat-checkbox [(ngModel)]="publicacionesFacebookChecked"
+      <mat-checkbox
+        [(ngModel)]="publicacionesFacebookChecked"
+        (click)="checkMostrarFacebookPostsChanged()"
         >Mostrar Publicaciones de Facebook</mat-checkbox
       >
     </div>
@@ -37,35 +41,36 @@
         <mat-icon>update</mat-icon>
       </mat-panel-description>
     </mat-expansion-panel-header>
-    <p class="mat-body-2" style="margin: 0px;">TOKEN:</p>
-    <div style="width: 100%" fxLayout="row wrap">
-      <!-- <div fxFlex="500px" style="min-height: 20px;max-height: 200px;">
-        <p
-          class="mat-body"
-          style="
-          margin: 0px;
-          text-align: center;
-            word-wrap: break-word;
-            white-space: pre-wrap;
-            word-break: normal;
-          "
-        >
-          {{ token }}
-        </p>
-      </div> -->
+    <p style="font-weight: 500;font-size: 1.1rem;max-width: 850px;">
+      <span style="font-weight: 600;font-size: 1.1rem;">NOTA:</span> El “TOKEN” es necesario para poder
+      consultar las publicaciones de Facebook, el token tiene una fecha de
+      caducidad cuando este expire es necesario generar un nuevo token desde
+      Facebook.
+    </p>
+    <div style="width: 100%" fxLayout="row">
       <div
         fxFlex="100%"
         fxLayout="row"
-        fxLayoutAlign="space-evenly center"
+        fxLayoutAlign="space-evenly start"
         fxLayoutGap="8px"
+        fxLayout.xs="row wrap"
+        fxLayoutAlign.xs="center start"
+        fxLayoutGap.xs="0px"
       >
-        <div fxFlex="400px" fxFlex.md="300px" fxFlex.sm="200px" fxFlex.xs="120px" style="min-height: 20px;max-height: 600px;">
+        <div
+          fxFlex="400px"
+          fxFlex.md="300px"
+          fxFlex.sm="200px"
+          fxFlex.xs="200px"
+          style="min-height: 20px; max-height: 600px"
+        >
+          <p style="margin: 0px; font-weight: 600">TOKEN ACTUAL:</p>
+
           <p
             class="mat-body"
-
             style="
-            margin: 0px;
-            text-align: center;
+              margin: 0px;
+              text-align: center;
               word-wrap: break-word;
               white-space: pre-wrap;
               word-break: normal;
@@ -73,25 +78,40 @@
           >
             {{ token }}
           </p>
-          <p>{{ fechaVencimiento | date}} hola</p>
+          <p style="margin-top: 16px;font-weight: 600;font-size: 0.9rem;"><span>Caduca el </span>{{ fechaVencimiento | formatoFecha }}</p>
         </div>
-        <button mat-icon-button color="accent" fxFlex="0 1 auto">
-          <mat-icon>edit</mat-icon>
-        </button>
-        <div fxFlex="400px" fxFlex.md="300px" fxFlex.sm="200px" fxFlex.xs="120px" >
+        <div
+          fxFlex="400px"
+          fxFlex.md="300px"
+          fxFlex.sm="200px"
+          fxFlex.xs="200px"
+          fxLayout="row wrap"
+        >
+          <p style="margin: 0px; font-weight: 600">ACTUALIZAR TOKEN:</p>
+
           <mat-form-field appearance="outline" fxFlex="100%">
             <mat-label>Nuevo Token</mat-label>
-            <textarea matInput
+            <textarea
+              matInput
               cdkTextareaAutosize
               #autosize="cdkTextareaAutosize"
               cdkAutosizeMinRows="1"
-              cdkAutosizeMaxRows="20"></textarea>
-            <mat-hint><button mat-button type="button">ACTUALIZAR</button></mat-hint>
+              cdkAutosizeMaxRows="20"
+            ></textarea>
+            <mat-hint>Ingresar nuevo token</mat-hint>
           </mat-form-field>
+          <div fxFlex="100%">
+            <mat-form-field appearance="outline" fxFlex="100%">
+              <mat-label>Caducidad del acceso a datos</mat-label>
+              <input matInput />
+              <mat-hint>Ejemplo: 1618400557</mat-hint>
+            </mat-form-field>
+          </div>
+          <div fxFlex="100%">
+            <button mat-button type="button" color="accent">ACTUALIZAR TOKEN</button>
+          </div>
         </div>
       </div>
-
-
     </div>
   </mat-expansion-panel>
 </mat-accordion>

@@ -25,11 +25,11 @@ export class MostrarFacebookPostComponent implements OnInit {
     this.pageId = ids[0];
     this.postId = ids[1];
     this.elementRef.nativeElement.innerHTML = `<div #container>
-    <div fbParse [lazyLoad]="100" [container]="container">
+    <div fbParse [lazyLoad]="100" [container]="container" style="width: 100%;overflow-x: hidden;" >
       <div
       class="fb-post"
       data-href="https://www.facebook.com/${this.pageId}/posts/${this.postId}/"
-      data-width="680"
+      data-width="700"
       data-show-text="true"
     >
     </div>

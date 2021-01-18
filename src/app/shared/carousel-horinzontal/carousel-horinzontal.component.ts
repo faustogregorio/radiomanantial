@@ -6,6 +6,8 @@ import { AnunciosService } from 'src/app/admin/anuncios/anuncios.service';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { MatDialog } from '@angular/material/dialog';
 import { ViewAnuncianteComponent } from '../view-anunciante/view-anunciante.component';
+import { FacebookAPIService } from 'src/app/services/facebook-api.service';
+import { MostrarFacebookPostComponent } from '../mostrar-facebook-post/mostrar-facebook-post.component';
 
 @Component({
   selector: 'app-carousel-horinzontal',
@@ -24,7 +26,8 @@ import { ViewAnuncianteComponent } from '../view-anunciante/view-anunciante.comp
   ]
 })
 export class CarouselHorinzontalComponent implements OnInit {
-  @Input() facebookAPI = false;
+  @Input() mostrarPublicacionesFacebook = false;
+  @Input() mostrarAnuncios = false;
 
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
@@ -44,7 +47,8 @@ export class CarouselHorinzontalComponent implements OnInit {
     media: MediaMatcher,
     private formBuilder: FormBuilder,
     private anunciosService: AnunciosService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private facebook: FacebookAPIService
   ) {
     this.carouselForm = this.formBuilder.group({
       carousel: this.formBuilder.array([])
@@ -59,7 +63,7 @@ export class CarouselHorinzontalComponent implements OnInit {
     this.anunciosService.anunciosChange.subscribe(
       (result: { id: number, img: string, operation: string }) => {
         if (result.id !== 0) {
-          if (result.operation === 'add') {
+          /* if (result.operation === 'add') {
             this.carouselData.push(result);
           } else if (result.operation === 'update') {
             this.carouselData = this.carouselData.filter(
@@ -80,26 +84,64 @@ export class CarouselHorinzontalComponent implements OnInit {
           this.carouselForm.patchValue({
             carousel: []
           });
-          this.initCarousel();
+          this.initCarousel(); */
+          window.location.href = './';
         }
       }
     );
 
+    if (this.mostrarPublicacionesFacebook) {
+      this.initFacebookPosts();
+    }
+    if (this.mostrarAnuncios) {
+      this.initAnuncios();
+    }
+
+    this.infiniteSlideLeft();
+  }
+  initFacebookPosts() {
+    this.facebook.getFacebookPosts().subscribe(
+      (result: any) => {
+        const sliderAnunciantes = [];
+        if (result.data) {
+          const sliderAnunciantes = [];
+          const data = result['data'].map(row => {
+            return { id: row.id, img: row.full_picture, message: row.message };
+          });
+
+          for (const post of data) {
+            sliderAnunciantes.push(
+              { id: post.id, img: post.img ? post.img : 'assets/img/facebook_fondo.jpg', message: post.message ? post.message : 'Ver publicación...', opcion: 'post' });
+          }
+          this.carouselData = this.carouselData.concat(sliderAnunciantes);
+          this.initCarousel();
+        } else {
+          this.initCarousel();
+        }
+
+
+      }, error => {
+        this.initCarousel();
+      }
+    );
+  }
+  initAnuncios() {
     this.anunciosService.getAnuncios().subscribe(
       result => {
         if (result['success']) {
           let sliderAnunciantes = [];
           for (const anunciante of result['data']) {
-            sliderAnunciantes.push({ id: anunciante['id'], img: anunciante['foto'] });
+            sliderAnunciantes.push({ id: anunciante['id'], img: anunciante['foto'], message: '', opcion: 'anuncio' });
           }
           this.carouselData = [this.carouselData[0], ...sliderAnunciantes];
           this.initCarousel();
+        } else {
+          this.initCarousel();
         }
       }, error => {
+        this.initCarousel();
       }
     );
-
-    this.infiniteSlideLeft();
   }
   initCarousel() {
     if (this.carouselData.length > 0) {
@@ -107,7 +149,9 @@ export class CarouselHorinzontalComponent implements OnInit {
         for (const slide of this.carouselData) {
           this.carousel.insert(0, this.formBuilder.group({
             id: slide.id,
-            img: slide.id === 0 ? slide.img : `${this.mainDomain}/uploads/${slide.img}`
+            img: slide.id === 0 ? slide.img : slide.opcion === 'post' ? `${slide.img}` : `${this.mainDomain}/uploads/${slide.img}`,
+            message: slide.message,
+            opcion: slide.opcion
           }));
         }
       }
@@ -165,7 +209,9 @@ export class CarouselHorinzontalComponent implements OnInit {
   initSlide(data: any) {
     return this.formBuilder.group({
       id: data.id,
-      img: data.id === 0 ? data.img : `${this.mainDomain}/uploads/${data.img}`
+      img: data.id === 0 ? data.img : data.opcion === 'post' ? `${data.img}` : `${this.mainDomain}/uploads/${data.img}`,
+      message: data.message,
+      opcion: data.opcion
     });
   }
 
@@ -184,13 +230,13 @@ export class CarouselHorinzontalComponent implements OnInit {
   infiniteSlideLeft() {
     this.slideDownInterval = setInterval(() => {
       this.addSlide();
-    }, 4000);
+    }, 3000);
 
   }
   infiniteSlideRight() {
     this.slideUpInterval = setInterval(() => {
       this.removeSlide();
-    }, 4000);
+    }, 3000);
   }
 
   ngOnDestroy(): void {
@@ -204,17 +250,27 @@ export class CarouselHorinzontalComponent implements OnInit {
     }
   }
 
-  onSelectedAnuncio(id) {
-    if (id === 0) return;
-    const dialogRef = this.dialog.open(ViewAnuncianteComponent, {
-      data: id,
-      height: '100vh',
-      maxWidth: '100vh',
-      width: '100vw',
-      autoFocus: false,
-    });
-    dialogRef.afterClosed().subscribe(result => {
-    });
+  onSelectedAnuncio(slide: { id: any, img: string, message: string, opcion: string }) {
+    if (slide.id === 0) { return; }
+    if (slide.opcion === 'post') {
+      console.log(slide);
+      this.dialog.open(MostrarFacebookPostComponent, {
+        data: slide.id,
+        autoFocus: true,
+        panelClass: 'post-dialog'
+      });
+
+    } else {
+      const dialogRef = this.dialog.open(ViewAnuncianteComponent, {
+        data: slide.id,
+        height: '100vh',
+        maxWidth: '100vh',
+        width: '100vw',
+        autoFocus: false,
+      });
+      dialogRef.afterClosed().subscribe(result => {
+      });
+    }
   }
 
 }
