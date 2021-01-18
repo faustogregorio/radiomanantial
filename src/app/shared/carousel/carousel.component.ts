@@ -113,11 +113,12 @@ export class CarouselComponent implements OnInit, OnDestroy {
         const sliderAnunciantes = [];
         const data = result['data'].map(row => {
           return { id: row.id, img: row.full_picture, message: row.message };
-        }).filter(row => { if (row.img) { return row; } });
+        });
         console.log(data);
 
         for (const post of data) {
-          sliderAnunciantes.push({ id: post.id, img: post.img ? post.img : '', message: post.message ? post.message : '', opcion: 'post' });
+          sliderAnunciantes.push(
+            { id: post.id, img: post.img ? post.img : 'assets/img/facebook_fondo.jpg', message: post.message ? post.message : 'Ver publicación...', opcion: 'post' });
         }
         this.carouselData = [this.carouselData[0], ...sliderAnunciantes];
         this.initCarousel();
@@ -229,13 +230,13 @@ export class CarouselComponent implements OnInit, OnDestroy {
   infiniteSlideDown() {
     this.slideDownInterval = setInterval(() => {
       this.addSlide();
-    }, 5000);
+    }, 3000);
 
   }
   infiniteSlideUp() {
     this.slideUpInterval = setInterval(() => {
       this.removeBottomSlide();
-    }, 5000);
+    }, 3000);
   }
 
   ngOnDestroy(): void {
@@ -249,7 +250,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSlideClicked(slide: {id: any, img: string, message: string, opcion: string}) {
+  onSlideClicked(slide: { id: any, img: string, message: string, opcion: string }) {
     if (slide.id === 0) { return; }
     if (slide.opcion === 'post') {
       console.log(slide);

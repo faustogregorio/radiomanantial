@@ -38,6 +38,7 @@ import { SlideHorizontalComponent } from './shared/carousel-horinzontal/slide-ho
 import { FooterComponent } from './footer/footer.component';
 import { MostrarFacebookPostComponent } from './shared/mostrar-facebook-post/mostrar-facebook-post.component';
 import { FacebookModule, FB_PARSE_LAZY_LOAD, FacebookService } from '@greg-md/ng-facebook';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -56,8 +57,6 @@ import { FacebookModule, FB_PARSE_LAZY_LOAD, FacebookService } from '@greg-md/ng
   ],
   imports: [
     BrowserModule,
-
-    // 3. Import Facebook components for a specific module.
     FacebookModule,
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -76,7 +75,8 @@ import { FacebookModule, FB_PARSE_LAZY_LOAD, FacebookService } from '@greg-md/ng
     MatMenuModule,
     QuillModule.forRoot(),
     MatSelectModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatProgressSpinnerModule
   ],
   entryComponents: [
     ViewAnuncianteComponent,

@@ -10,7 +10,7 @@ import { environment } from 'src/environments/environment.prod';
 export class MostrarFacebookPostComponent implements OnInit {
   pageId: string;
   postId: string;
-  postUrl = 'hey';
+  loading = true;
   settings = {
     appId: environment.facebookAppId,
     version: 'v9.0',
@@ -24,12 +24,12 @@ export class MostrarFacebookPostComponent implements OnInit {
     const ids = this.id.split('_');
     this.pageId = ids[0];
     this.postId = ids[1];
-    console.log('posurl: ', this.postUrl);
     this.elementRef.nativeElement.innerHTML = `<div #container>
     <div fbParse [lazyLoad]="100" [container]="container">
       <div
       class="fb-post"
       data-href="https://www.facebook.com/${this.pageId}/posts/${this.postId}/"
+      data-width="680"
       data-show-text="true"
     >
     </div>
@@ -38,7 +38,7 @@ export class MostrarFacebookPostComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.facebook.init().subscribe(()=> {this.postUrl = ''});
-    this.facebook.parse(this.elementRef.nativeElement).subscribe();
+    this.facebook.init().subscribe();
+    this.facebook.parse(this.elementRef.nativeElement).subscribe(() => { this.loading = false; });
   }
 }

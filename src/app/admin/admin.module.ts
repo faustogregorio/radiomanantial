@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { AdminRoutingModule } from './admin-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AdminComponent } from './admin.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { HomeComponent } from './home/home.component';
@@ -30,6 +30,10 @@ import { ModulosComponent } from './modulos/modulos.component';
 import { ViewModulosComponent } from './modulos/view-modulos/view-modulos.component';
 import { AddModuloComponent } from './modulos/add-modulo/add-modulo.component';
 import { EditModuloComponent } from './modulos/edit-modulo/edit-modulo.component';
+import { AjustesComponent } from './ajustes/ajustes.component';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {TextFieldModule} from '@angular/cdk/text-field';
 
 @NgModule({
   declarations: [
@@ -45,13 +49,15 @@ import { EditModuloComponent } from './modulos/edit-modulo/edit-modulo.component
     ModulosComponent,
     ViewModulosComponent,
     AddModuloComponent,
-    EditModuloComponent
+    EditModuloComponent,
+    AjustesComponent
   ],
   imports: [
     CommonModule,
     AdminRoutingModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
+    FormsModule,
     FlexLayoutModule,
     MatTableModule,
     MatSlideToggleModule,
@@ -64,7 +70,10 @@ import { EditModuloComponent } from './modulos/edit-modulo/edit-modulo.component
     MatInputModule,
     MatSelectModule,
     MatDividerModule,
-    MatMenuModule
+    MatMenuModule,
+    MatExpansionModule,
+    MatCheckboxModule,
+    TextFieldModule
   ],
   entryComponents: [
     MainImageComponent,

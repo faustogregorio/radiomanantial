@@ -5,16 +5,14 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { MainImageComponent } from './admin/home/main-image/main-image.component';
 import { LoginComponent } from './auth/login/login.component';
 import { AuthService } from './auth/auth.service';
-import { error } from 'protractor';
 import { CookieService } from 'ngx-cookie-service';
-import { Router } from '@angular/router';
-import { AnunciosComponent } from './admin/anuncios/anuncios.component';
 import { AddAnuncioComponent } from './admin/anuncios/add-anuncio/add-anuncio.component';
 import { ViewAnunciosComponent } from './admin/anuncios/view-anuncios/view-anuncios.component';
 import { AddModuloComponent } from './admin/modulos/add-modulo/add-modulo.component';
 import { ViewModulosComponent } from './admin/modulos/view-modulos/view-modulos.component';
 import { environment } from 'src/environments/environment.prod';
 import { FacebookService } from '@greg-md/ng-facebook';
+import { AjustesComponent } from './admin/ajustes/ajustes.component';
 
 @Component({
   selector: 'app-root',
@@ -144,6 +142,17 @@ export class AppComponent implements OnDestroy, OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
 
+    });
+  }
+
+  abrirAjustes() {
+    this.snav.close();
+    this.dialog.open(AjustesComponent, {
+      maxHeight: this.mobileQuery.matches ? '100vh' : '85vh',
+      minHeight: this.mobileQuery.matches ? '100vh' : '100px',
+      maxWidth: this.mobileQuery.matches ? '100vw' : '95vw',
+      minWidth: this.mobileQuery.matches ? '100vw' : '100px',
+      autoFocus: false,
     });
   }
 }

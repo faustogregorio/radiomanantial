@@ -109,14 +109,17 @@ a {
   text-decoration: none;
 }
 .post-dialog {
-  width: 750px;
+  width: 680px;
+  min-width: 10vh;
   min-height: 10vh;
-
+  max-height: 95vh;
+  overflow-y: auto;
 }
 .post-dialog .mat-dialog-container {
-  border-radius: 0px;
+  border-radius: 5px;
   padding: 0;
   margin: 0;
+
 }
 .cdk-overlay-dark-backdrop {
   backdrop-filter: blur(5px) !important;

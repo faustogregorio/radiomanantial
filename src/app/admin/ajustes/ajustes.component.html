@@ -1,0 +1,97 @@
+<div style="position: relative">
+  <div style="position: absolute; top: 0px; right: 0px">
+    <mat-icon (click)="closeDialog()" style="cursor: pointer">close</mat-icon>
+  </div>
+</div>
+<h2 class="mat-h2" style="text-align: center">Ajustes</h2>
+
+<mat-accordion class="example-headers-align" multi>
+  <mat-expansion-panel expanded>
+    <mat-expansion-panel-header>
+      <mat-panel-title> Carrusel </mat-panel-title>
+      <mat-panel-description>
+        Elegir que mostrar
+        <mat-icon>{{
+          anunciosChecked && publicacionesFacebookChecked
+            ? "check_box"
+            : anunciosChecked || publicacionesFacebookChecked
+            ? "indeterminate_check_box"
+            : "check_box_outline_blank"
+        }}</mat-icon>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <div style="width: 100%" fxLayout="column">
+      <mat-checkbox [(ngModel)]="anunciosChecked"
+        >Mostrar Anuncios</mat-checkbox
+      >
+      <mat-checkbox [(ngModel)]="publicacionesFacebookChecked"
+        >Mostrar Publicaciones de Facebook</mat-checkbox
+      >
+    </div>
+  </mat-expansion-panel>
+  <mat-expansion-panel expanded>
+    <mat-expansion-panel-header>
+      <mat-panel-title> Facebook </mat-panel-title>
+      <mat-panel-description>
+        Radio Manantial Token
+        <mat-icon>update</mat-icon>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <p class="mat-body-2" style="margin: 0px;">TOKEN:</p>
+    <div style="width: 100%" fxLayout="row wrap">
+      <!-- <div fxFlex="500px" style="min-height: 20px;max-height: 200px;">
+        <p
+          class="mat-body"
+          style="
+          margin: 0px;
+          text-align: center;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+            word-break: normal;
+          "
+        >
+          {{ token }}
+        </p>
+      </div> -->
+      <div
+        fxFlex="100%"
+        fxLayout="row"
+        fxLayoutAlign="space-evenly center"
+        fxLayoutGap="8px"
+      >
+        <div fxFlex="400px" fxFlex.md="300px" fxFlex.sm="200px" fxFlex.xs="120px" style="min-height: 20px;max-height: 600px;">
+          <p
+            class="mat-body"
+
+            style="
+            margin: 0px;
+            text-align: center;
+              word-wrap: break-word;
+              white-space: pre-wrap;
+              word-break: normal;
+            "
+          >
+            {{ token }}
+          </p>
+          <p>{{ fechaVencimiento | date}} hola</p>
+        </div>
+        <button mat-icon-button color="accent" fxFlex="0 1 auto">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <div fxFlex="400px" fxFlex.md="300px" fxFlex.sm="200px" fxFlex.xs="120px" >
+          <mat-form-field appearance="outline" fxFlex="100%">
+            <mat-label>Nuevo Token</mat-label>
+            <textarea matInput
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              cdkAutosizeMinRows="1"
+              cdkAutosizeMaxRows="20"></textarea>
+            <mat-hint><button mat-button type="button">ACTUALIZAR</button></mat-hint>
+          </mat-form-field>
+        </div>
+      </div>
+
+
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>

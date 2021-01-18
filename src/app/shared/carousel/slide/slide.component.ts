@@ -13,7 +13,6 @@ export class SlideComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this.slideForm);
   }
 
   emitSlideIndex() {

@@ -1,5 +1,9 @@
-<div class="slide">
-  <div
+<div
+  class="slide"
+  [style.cursor]="id === 0 ? 'default' : 'pointer'"
+  (click)="emitSlideIndex()"
+>
+  <!-- <div
     style="
       position: absolute;
 
@@ -13,12 +17,11 @@
       alt=""
       style="width: 100%; height: 100%; object-fit: cover"
     />
-  </div>
+  </div> -->
   <div
     style="position: relative; width: 100%; height: 100%"
     fxLayoutAlign="center end"
   >
-    <!-- <p style="position: absolute;">{{message}}</p> -->
     <div
       *ngIf="message !== ''"
       style="
@@ -42,10 +45,8 @@
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: normal;
-          -webkit-line-clamp: 3;
+          -webkit-line-clamp: 2;
         "
-        [style.cursor]="id === 0 ? 'default' : 'pointer'"
-        (click)="emitSlideIndex()"
       >
         {{ message }}
       </p>
@@ -55,9 +56,7 @@
       alt=""
       width="100%"
       height="100%"
-      style="object-fit: contain"
-      [style.cursor]="id === 0 ? 'default' : 'pointer'"
-      (click)="emitSlideIndex()"
+      style="object-fit: cover"
     />
   </div>
 </div>
