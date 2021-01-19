@@ -1,4 +1,7 @@
-<div style="width: 100%;height: 100%;position: relative;" *ngIf="loading" fxLayoutAlign="center center">
+<button mat-mini-fab type="button" color="primary" *ngIf="!loading" style="position: fixed; top: 8px; right: 8px;" (click)="closeDialog()">
+  <mat-icon>close</mat-icon>
+</button>
+<div [style.width]="postWidth+'px'" style="position: relative;top: 0px;" *ngIf="loading" fxLayoutAlign="center start">
   <mat-spinner diameter="35"></mat-spinner>
 </div>
 

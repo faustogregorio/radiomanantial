@@ -39,6 +39,7 @@ import { FooterComponent } from './footer/footer.component';
 import { MostrarFacebookPostComponent } from './shared/mostrar-facebook-post/mostrar-facebook-post.component';
 import { FacebookModule, FB_PARSE_LAZY_LOAD, FacebookService } from '@greg-md/ng-facebook';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { LayoutModule } from '@angular/cdk/layout';
 
 @NgModule({
   declarations: [
@@ -76,7 +77,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     QuillModule.forRoot(),
     MatSelectModule,
     MatBadgeModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    LayoutModule
   ],
   entryComponents: [
     ViewAnuncianteComponent,

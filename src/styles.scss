@@ -110,12 +110,14 @@ a {
 }
 .post-dialog {
   width: 700px;
+  max-width: 100vw;
   min-width: 10vh;
   min-height: 10vh;
   max-height: 98vh;
 }
 .post-dialog .mat-dialog-container {
   border-radius: 5px;
+  max-width: 100vw;
   padding: 0;
   margin: 0;
 
@@ -123,11 +125,19 @@ a {
 .cdk-overlay-dark-backdrop {
   backdrop-filter: blur(5px) !important;
 }
+@media screen and (max-width: 899px) {
+  .post-dialog {
+    width: 500px;
+  }
+}
+@media screen and (max-width: 639px) {
+  .post-dialog {
+    width: 350px;
+  }
+}
 @media screen and (max-width: 599px) {
   .mat-dialog-container {
     border-radius: 0px !important;
   }
-  .post-dialog {
-    width: 95vw;
-  }
 }
+

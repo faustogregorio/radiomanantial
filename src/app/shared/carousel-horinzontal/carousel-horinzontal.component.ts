@@ -256,6 +256,7 @@ export class CarouselHorinzontalComponent implements OnInit {
       console.log(slide);
       this.dialog.open(MostrarFacebookPostComponent, {
         data: slide.id,
+        maxWidth: '100vw',
         autoFocus: true,
         panelClass: 'post-dialog'
       });
@@ -264,7 +265,7 @@ export class CarouselHorinzontalComponent implements OnInit {
       const dialogRef = this.dialog.open(ViewAnuncianteComponent, {
         data: slide.id,
         height: '100vh',
-        maxWidth: '100vh',
+        maxWidth: '100vw',
         width: '100vw',
         autoFocus: false,
       });

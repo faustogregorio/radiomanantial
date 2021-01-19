@@ -1,9 +1,11 @@
 button {
-  display: none;
+  /* display: none; */
+  opacity: 0.5;
 }
 
 #carousel-container:hover {
   button {
-    display: block;
+    /* display: block; */
+    opacity: 0.9;
   }
 }
