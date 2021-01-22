@@ -27,7 +27,7 @@
       <mat-hint>Ingrese su contraseña</mat-hint>
       <mat-error *ngIf="loginForm.get('password').hasError('required')">Contraseña vacia</mat-error>
     </mat-form-field>
-    <h4 style="color: red;" *ngIf="error.exist" align="center">{{error.message}}</h4>
+    <!-- <h4 style="color: red;" *ngIf="error.exist" align="center">{{error.message}}</h4> -->
     <button mat-flat-button color="primary" type="submit">Iniciar Sesión</button>
   </form>
 

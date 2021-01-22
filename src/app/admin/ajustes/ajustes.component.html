@@ -80,12 +80,14 @@
           </p>
           <p style="margin-top: 16px;font-weight: 600;font-size: 0.9rem;"><span>Caduca el </span>{{ fechaVencimiento | formatoFecha }}</p>
         </div>
-        <div
+        <form
           fxFlex="400px"
           fxFlex.md="300px"
           fxFlex.sm="200px"
           fxFlex.xs="200px"
           fxLayout="row wrap"
+          [formGroup]="tokenForm"
+          (ngSubmit)="onSubmit()"
         >
           <p style="margin: 0px; font-weight: 600">ACTUALIZAR TOKEN:</p>
 
@@ -93,6 +95,7 @@
             <mat-label>Nuevo Token</mat-label>
             <textarea
               matInput
+              formControlName="token"
               cdkTextareaAutosize
               #autosize="cdkTextareaAutosize"
               cdkAutosizeMinRows="1"
@@ -103,14 +106,14 @@
           <div fxFlex="100%">
             <mat-form-field appearance="outline" fxFlex="100%">
               <mat-label>Caducidad del acceso a datos</mat-label>
-              <input matInput />
+              <input matInput formControlName="caducidad" />
               <mat-hint>Ejemplo: 1618400557</mat-hint>
             </mat-form-field>
           </div>
           <div fxFlex="100%">
-            <button mat-button type="button" color="accent">ACTUALIZAR TOKEN</button>
+            <button mat-button color="accent" [disabled]="tokenForm.invalid">ACTUALIZAR TOKEN</button>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   </mat-expansion-panel>

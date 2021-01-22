@@ -3,6 +3,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from '../auth.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,8 @@ export class LoginComponent implements OnInit {
     public dialogRef: MatDialogRef<LoginComponent>,
     private auth: AuthService,
     private formBuilder: FormBuilder,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    public snackBar: MatSnackBar
   ) {
     this.loginForm = this.formBuilder.group({
       user: ['', Validators.required],
@@ -27,6 +29,11 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loginForm.valueChanges.subscribe(
+      () => {
+        this.error.exist = false;
+      }
+    );
   }
   closeDialog() {
     this.dialogRef.close(this.dialogResponse);
@@ -40,14 +47,29 @@ export class LoginComponent implements OnInit {
             this.cookieService.set('token', result['token'] );
             localStorage.setItem('token', result['token']);
             this.dialogResponse.success = true;
+            this.openSnackBar('Bienvenido');
             this.closeDialog();
+          } else {
+            this.openSnackBar('Por favor intente de nuevo', 'ERROR!');
+            this.loginForm.patchValue({
+              password: ''
+            });
+
           }
         },
         error => {
           this.error.exist = true;
           this.error.message = error['error'].message;
+          this.openSnackBar(this.error.message, 'ERROR!');
         }
       );
     }
+  }
+
+  openSnackBar(message: string, action = 'ACEPTAR') {
+    this.snackBar.open(message, action, {
+      duration: 4000
+    });
+
   }
 }

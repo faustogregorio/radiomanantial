@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit, Inject } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
@@ -7,6 +8,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./ajustes.component.scss']
 })
 export class AjustesComponent implements OnInit, OnDestroy {
+  tokenForm: FormGroup;
   reloadPagina = false;
   anunciosChecked = false;
   publicacionesFacebookChecked = false;
@@ -14,13 +16,20 @@ export class AjustesComponent implements OnInit, OnDestroy {
   token = 'EAA5Rq3xHZCMABAE0mI8xIiMs5vwZAATT3o4b6cjE8P9ZA7rChdH49tSSFGmZBSyve7JjehRdSHogBULHVZAM5XYQDw0hhoDkTQD0FbbrAZB5jHWj3sPKPIUlVkqmkvdF6SlnAQWlH2z0gzMdKUYbvCA6u4ZBTX3NBVGSLNjBXLFhatXe6B7YQ9B';
   constructor(
     public dialogRef: MatDialogRef<AjustesComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: {anuncios: boolean, publicacionesFacebook: boolean}
+    @Inject(MAT_DIALOG_DATA) public data: {anuncios: boolean, publicacionesFacebook: boolean},
+    private formBuilder: FormBuilder
   ) {
+    this.tokenForm = this.formBuilder.group({
+      token: ['', [Validators.required]],
+      caducidad: ['', [Validators.required, Validators.pattern('[0-9]+'), Validators.minLength(10)]]
+    });
     this.anunciosChecked = data.anuncios;
     this.publicacionesFacebookChecked = this.data.publicacionesFacebook;
   }
 
-
+  onSubmit() {
+    console.log(this.tokenForm);
+  }
 
   ngOnInit(): void {
 
