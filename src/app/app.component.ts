@@ -12,6 +12,7 @@ import { AddModuloComponent } from './admin/modulos/add-modulo/add-modulo.compon
 import { ViewModulosComponent } from './admin/modulos/view-modulos/view-modulos.component';
 
 import { AjustesComponent } from './admin/ajustes/ajustes.component';
+import { AdminService } from './admin/admin.service';
 
 
 @Component({
@@ -20,7 +21,8 @@ import { AjustesComponent } from './admin/ajustes/ajustes.component';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnDestroy, OnInit {
-  mostrar = { anuncios: true, publicacionesFacebook: true };
+  mostrar: { anuncios: boolean, publicacionesFacebook: boolean };
+  token;
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
   @ViewChild('snav') snav: MatSidenav;
@@ -29,13 +31,20 @@ export class AppComponent implements OnDestroy, OnInit {
     media: MediaMatcher,
     public dialog: MatDialog,
     private authService: AuthService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private adminService: AdminService
   ) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
   }
   ngOnInit(): void {
+    this.adminService.getAjustesDelCarrusel().subscribe(
+      (response: any) => {
+        this.mostrar = { anuncios: response.data.anuncios, publicacionesFacebook: response.data.facebook_posts };
+        this.token = response.data.token;
+      }
+    );
   }
 
   ngOnDestroy(): void {

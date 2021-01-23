@@ -27,6 +27,7 @@ import { MostrarFacebookPostComponent } from '../mostrar-facebook-post/mostrar-f
 export class CarouselComponent implements OnInit, OnDestroy {
   @Input() mostrarPublicacionesFacebook = false;
   @Input() mostrarAnuncios = false;
+  @Input() token;
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
 
@@ -111,7 +112,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     this.infiniteSlideDown();
   }
   initFacebookPosts() {
-    this.facebook.getFacebookPosts().subscribe(
+    this.facebook.getFacebookPosts(this.token).subscribe(
       (result: any) => {
         const sliderAnunciantes = [];
         if (result.data) {

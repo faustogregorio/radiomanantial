@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ViewAnuncianteComponent } from '../view-anunciante/view-anunciante.component';
 import { FacebookAPIService } from 'src/app/services/facebook-api.service';
 import { MostrarFacebookPostComponent } from '../mostrar-facebook-post/mostrar-facebook-post.component';
+import { Token } from '@angular/compiler/src/ml_parser/lexer';
 
 @Component({
   selector: 'app-carousel-horinzontal',
@@ -28,6 +29,7 @@ import { MostrarFacebookPostComponent } from '../mostrar-facebook-post/mostrar-f
 export class CarouselHorinzontalComponent implements OnInit {
   @Input() mostrarPublicacionesFacebook = false;
   @Input() mostrarAnuncios = false;
+  @Input() token;
 
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
@@ -100,7 +102,7 @@ export class CarouselHorinzontalComponent implements OnInit {
     this.infiniteSlideLeft();
   }
   initFacebookPosts() {
-    this.facebook.getFacebookPosts().subscribe(
+    this.facebook.getFacebookPosts(this.token).subscribe(
       (result: any) => {
         const sliderAnunciantes = [];
         if (result.data) {

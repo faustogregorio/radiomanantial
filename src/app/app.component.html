@@ -99,13 +99,21 @@
         fxLayoutGap.xs="40px"
       >
         <div class="anuncio" *ngIf="!mobileQuery.matches">
-          <app-carousel [mostrarPublicacionesFacebook]="mostrar.publicacionesFacebook" [mostrarAnuncios]="mostrar.anuncios"></app-carousel>
+          <app-carousel
+            [mostrarPublicacionesFacebook]="mostrar.publicacionesFacebook"
+            [mostrarAnuncios]="mostrar.anuncios"
+            [token]="token"
+          ></app-carousel>
         </div>
         <div class="contenido" fxFlexOrder.xs="1">
           <router-outlet></router-outlet>
         </div>
         <div fxFlex="100%" *ngIf="mobileQuery.matches" fxFlexOrder.xs="2">
-          <app-carousel-horinzontal [mostrarPublicacionesFacebook]="mostrar.publicacionesFacebook" [mostrarAnuncios]="mostrar.anuncios"></app-carousel-horinzontal>
+          <app-carousel-horinzontal
+            [mostrarPublicacionesFacebook]="mostrar.publicacionesFacebook"
+            [mostrarAnuncios]="mostrar.anuncios"
+            [token]="token"
+          ></app-carousel-horinzontal>
         </div>
         <div class="chat" fxFlexOrder.xs="3">
           <iframe

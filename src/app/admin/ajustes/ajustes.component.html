@@ -11,7 +11,7 @@
       <mat-panel-title> Carrusel </mat-panel-title>
       <mat-panel-description>
         Elegir que mostrar
-        <mat-icon style="color: #f29f05;">{{
+        <mat-icon style="color: #f29f05">{{
           anunciosChecked && publicacionesFacebookChecked
             ? "check_box"
             : anunciosChecked || publicacionesFacebookChecked
@@ -31,6 +31,17 @@
         (click)="checkMostrarFacebookPostsChanged()"
         >Mostrar Publicaciones de Facebook</mat-checkbox
       >
+      <button
+        mat-button
+        type="button"
+        [disabled]="
+          !(reloadPagina.anunciosChanged || reloadPagina.postsChanged)
+        "
+        color="accent"
+        (click)="saveCarruselChanges()"
+      >
+        CLIC PARA APLICAR CAMBIOS
+      </button>
     </div>
   </mat-expansion-panel>
   <mat-expansion-panel expanded>
@@ -41,11 +52,11 @@
         <mat-icon>update</mat-icon>
       </mat-panel-description>
     </mat-expansion-panel-header>
-    <p style="font-weight: 500;font-size: 1.1rem;max-width: 850px;">
-      <span style="font-weight: 600;font-size: 1.1rem;">NOTA:</span> El “TOKEN” es necesario para poder
-      consultar las publicaciones de Facebook, el token tiene una fecha de
-      caducidad cuando este expire es necesario generar un nuevo token desde
-      Facebook.
+    <p style="font-weight: 500; font-size: 1.1rem; max-width: 850px">
+      <span style="font-weight: 600; font-size: 1.1rem">NOTA:</span> El “TOKEN”
+      es necesario para poder consultar las publicaciones de Facebook, el token
+      tiene una fecha de caducidad cuando este expire es necesario generar un
+      nuevo token desde Facebook.
     </p>
     <div style="width: 100%" fxLayout="row">
       <div
@@ -78,7 +89,9 @@
           >
             {{ token }}
           </p>
-          <p style="margin-top: 16px;font-weight: 600;font-size: 0.9rem;"><span>Caduca el </span>{{ fechaVencimiento | formatoFecha }}</p>
+          <p style="margin-top: 16px; font-weight: 600; font-size: 0.9rem">
+            <span>Caduca el </span>{{ fechaVencimiento | formatoFecha }}
+          </p>
         </div>
         <form
           fxFlex="400px"
@@ -111,7 +124,9 @@
             </mat-form-field>
           </div>
           <div fxFlex="100%">
-            <button mat-button color="accent" [disabled]="tokenForm.invalid">ACTUALIZAR TOKEN</button>
+            <button mat-button color="accent" [disabled]="tokenForm.invalid">
+              ACTUALIZAR TOKEN
+            </button>
           </div>
         </form>
       </div>
