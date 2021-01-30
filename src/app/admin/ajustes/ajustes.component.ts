@@ -44,6 +44,7 @@ export class AjustesComponent implements OnInit, OnDestroy {
             token: '',
             caducidad: ''
           });
+          this.updated = true;
         }, error => {
           this.openSnackBar('No pudo ser actualizado, intente de nuevo', 'ERROR!');
         }
