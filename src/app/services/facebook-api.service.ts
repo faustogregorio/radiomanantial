@@ -11,6 +11,6 @@ export class FacebookAPIService {
   ) { }
   getFacebookPosts(token: string) {
     return this.http
-      .get(`https://graph.facebook.com/v9.0/me/posts?fields=id%2Cmessage%2Cfull_picture%2Ccreated_time&access_token=${token}`);
+      .get(`https://graph.facebook.com/v9.0/1875219305842160/posts?fields=message,full_picture,id,permalink_url&limit=15&access_token=${token}`);
   }
 }

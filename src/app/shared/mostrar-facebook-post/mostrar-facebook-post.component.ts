@@ -32,7 +32,6 @@ export class MostrarFacebookPostComponent implements OnInit {
     } else if (this.breakpointObserver.isMatched('(max-width: 899px)')) {
       this.postWidth = '500';
     }
-    console.log('postWidth: ', this.postWidth);
     this.elementRef.nativeElement.innerHTML = `
     <div #container>
     <div fbParse [lazyLoad]="100" [container]="container" style="width: 100%;overflow-x: hidden;" >

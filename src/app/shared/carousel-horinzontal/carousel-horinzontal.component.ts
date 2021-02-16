@@ -255,7 +255,6 @@ export class CarouselHorinzontalComponent implements OnInit {
   onSelectedAnuncio(slide: { id: any, img: string, message: string, opcion: string }) {
     if (slide.id === 0) { return; }
     if (slide.opcion === 'post') {
-      console.log(slide);
       this.dialog.open(MostrarFacebookPostComponent, {
         data: slide.id,
         maxWidth: '100vw',

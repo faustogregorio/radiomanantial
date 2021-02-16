@@ -73,7 +73,6 @@ export class CarouselComponent implements OnInit, OnDestroy {
     this.onResize(window.innerWidth);
     this.anunciosService.anunciosChange.subscribe(
       (result: { id: number, img: string, operation: string }) => {
-        console.log(result);
         if (result.id !== 0) {
           /* if (result.operation === 'add') {
             this.carouselData.push(result);
@@ -266,7 +265,6 @@ export class CarouselComponent implements OnInit, OnDestroy {
   onSlideClicked(slide: { id: any, img: string, message: string, opcion: string }) {
     if (slide.id === 0) { return; }
     if (slide.opcion === 'post') {
-      console.log(slide);
       this.dialog.open(MostrarFacebookPostComponent, {
         data: slide.id,
         autoFocus: true,
