@@ -113,14 +113,19 @@ export class CarouselComponent implements OnInit, OnDestroy {
   initFacebookPosts() {
     this.facebook.getFacebookPosts(this.token).subscribe(
       (result: any) => {
-        const sliderAnunciantes = [];
+        let sliderAnunciantes = [];
         if (result.data) {
-          const sliderAnunciantes = [];
+          sliderAnunciantes = [];
           const data = result['data'].map(row => {
-            return { id: row.id, img: row.full_picture, message: row.message };
+              return { id: row.id, img: row.full_picture, message: row.message };
+          });
+          const publicaciones = data.filter(publicacion => {
+            if (publicacion.message) {
+              return publicacion;
+            }
           });
 
-          for (const post of data) {
+          for (const post of publicaciones) {
             sliderAnunciantes.push(
               { id: post.id, img: post.img ? post.img : 'assets/img/facebook_fondo.jpg', message: post.message ? post.message : 'Ver publicación...', opcion: 'post' });
           }

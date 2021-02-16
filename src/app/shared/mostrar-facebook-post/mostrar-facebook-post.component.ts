@@ -12,7 +12,7 @@ export class MostrarFacebookPostComponent implements OnInit {
   pageId: string;
   postId: string;
   loading = true;
-  postWidth = '700';
+  postWidth = '750';
   settings = {
     appId: environment.facebookAppId,
     version: 'v9.0',
@@ -32,6 +32,7 @@ export class MostrarFacebookPostComponent implements OnInit {
     } else if (this.breakpointObserver.isMatched('(max-width: 899px)')) {
       this.postWidth = '500';
     }
+    console.log(this.postWidth);
     this.elementRef.nativeElement.innerHTML = `
     <div #container>
     <div fbParse [lazyLoad]="100" [container]="container" style="width: 100%;overflow-x: hidden;" >
