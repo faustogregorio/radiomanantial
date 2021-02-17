@@ -32,10 +32,10 @@ export class HomeComponent implements OnInit, OnDestroy {
         if (result['success']) {
           this.imagenPrincipal = `${this.domain}/uploads/${result['data'].nombre}`;
         } else {
-          this.imagenPrincipal = 'assets/img/imagen_principal.jpeg';
+          this.imagenPrincipal = 'assets/img/imagen_principal.jpg';
         }
       }, error => {
-        this.imagenPrincipal = 'assets/img/imagen_principal.jpeg';
+        this.imagenPrincipal = 'assets/img/imagen_principal.jpg';
       }
     );
   }
